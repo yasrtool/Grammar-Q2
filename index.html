@@ -1,40 +1,591 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parts of Speech Quiz | English Language Department</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=IM+Fell+English+SC&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Parts of Speech Quiz | Al-Mustaqbal University</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@400;600&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#D4AF37;--gold-light:#F0D060;--gold-dim:#8B722A;--deep:#040714;--card:rgba(15,20,55,0.85);--white:#F5F0E8;--gray:#8891AA;--correct:#27AE60;--wrong:#E74C3C;--correct-bg:rgba(39,174,96,0.18);--wrong-bg:rgba(231,76,60,0.18);}
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
-body{font-family:'Crimson Pro',Georgia,serif;background:var(--deep);color:var(--white);min-height:100vh;overflow-x:hidden;}
-#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
-.nebula{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;animation:nebFloat 12s ease-in-out infinite;}
-.neb1{width:500px;height:500px;background:rgba(100,60,200,0.12);top:-100px;left:-100px;}
-.neb2{width:400px;height:400px;background:rgba(212,175,55,0.08);bottom:-80px;right:-80px;animation-delay:-6s;}
-.neb3{width:350px;height:350px;background:rgba(30,80,200,0.1);top:40%;left:60%;animation-delay:-3s;}
-@keyframes nebFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(25px,-25px) scale(1.08);}}
-.screen{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.6s ease;}
-.hidden{display:none!important;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-.card{background:var(--card);border:1px solid rgba(212,175,55,0.25);border-radius:20px;backdrop-filter:blur(20px);box-shadow:0 25px 80px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.15);padding:50px 45px;max-width:680px;width:100%;}
-.dept-badge{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:30px;}
-.dept-badge .uni{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);}
-.dept-badge .dept{font-family:'IM Fell English SC',serif;font-size:16px;color:var(--gold);letter-spacing:1px;text-align:center;}
-.gold-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:8px auto;}
-/* TG */
-#telegram-screen .card{text-align:center;}
-.tg-icon{font-size:80px;margin:20px 0;animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
-.tg-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--gold);margin-bottom:12px;}
-.tg-sub{font-size:1.1rem;color:var(--gray);line-height:1.7;margin-bottom:30px;}
-.tg-counter{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;color:var(--gold);margin:20px 0;}
-.tg-counter-label{font-size:0.9rem;color:var(--gray);letter-spacing:2px;text-transform:uppercase;}
-.btn-tg{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#229ED9,#1a7bb0);color:white;border:none;border-radius:50px;padding:16px 36px;font-size:1.1rem;font-family:'Crimson Pro',serif;font-weight:600;cursor:pointer;text-decoration:none;box-shadow:0 8px 30px rgba(34,158,217,0.4);transition:all 0.3s;}
-.btn-tg:hover{transform:translateY(-3px);}
-/* LOGIN */
-#login-screen .card{text-align:center;}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4AF37;--gold-dim:#8B722A;--gold-light:#F0D060;
+  --deep:#040714;--card:rgba(15,20,55,0.88);
+  --white:#F5F0E8;--gray:#8891AA;
+  --correct:#27AE60;--wrong:#E74C3C;
+  --cbg:rgba(39,174,96,0.18);--wbg:rgba(231,76,60,0.18);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--deep);color:var(--white);min-height:100vh;overflow-x:hidden}
+/* stars */
+#cvs{position:fixed;inset:0;pointer-events:none;z-index:0}
+/* nebula */
+.nb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:nf 12s ease-in-out infinite}
+.nb1{width:480px;height:480px;background:rgba(100,60,200,.12);top:-80px;left:-80px}
+.nb2{width:400px;height:400px;background:rgba(212,175,55,.08);bottom:-80px;right:-80px;animation-delay:-6s}
+.nb3{width:340px;height:340px;background:rgba(30,80,200,.1);top:45%;left:58%;animation-delay:-3s}
+@keyframes nf{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(22px,-22px) scale(1.07)}}
+/* screens */
+.scr{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;animation:fi .5s ease}
+.hidden{display:none!important}
+@keyframes fi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+/* card */
+.card{background:var(--card);border:1px solid rgba(212,175,55,.25);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 24px 72px rgba(0,0,0,.5);padding:48px 44px;max-width:660px;width:100%}
+/* dept badge */
+.badge{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:28px}
+.badge .uni{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+.badge .dept{font-size:15px;color:var(--gold);letter-spacing:1px;text-align:center}
+.gline{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:6px auto}
+/* telegram */
+#tg-scr .card{text-align:center}
+.tgico{font-size:78px;margin:18px 0;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.tgtitle{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:var(--gold);margin-bottom:10px}
+.tgsub{font-size:1.05rem;color:var(--gray);line-height:1.7;margin-bottom:28px}
+.tgcount{font-family:'Playfair Display',serif;font-size:3.4rem;font-weight:900;color:var(--gold);margin:18px 0}
+.tglbl{font-size:.85rem;color:var(--gray);letter-spacing:2px;text-transform:uppercase}
+.btntg{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#229ED9,#1a7bb0);color:#fff;border:none;border-radius:50px;padding:15px 34px;font-size:1.05rem;font-family:'Crimson Pro',serif;font-weight:600;cursor:pointer;text-decoration:none;box-shadow:0 8px 28px rgba(34,158,217,.4);transition:transform .3s}
+.btntg:hover{transform:translateY(-3px)}
+/* login */
+#lg-scr .card{text-align:center}
+.ltitle{font-family:'Playfair Display',serif;font-size:1.95rem;font-weight:700;color:var(--gold);margin-bottom:8px}
+.lsub{color:var(--gray);font-size:1rem;margin-bottom:30px;line-height:1.65}
+.iw{margin-bottom:22px;text-align:left}
+.iw label{display:block;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:7px}
+.iw input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:15px 18px;color:var(--white);font-family:'Crimson Pro',serif;font-size:1.1rem;transition:all .3s;outline:none}
+.iw input:focus{border-color:var(--gold);background:rgba(212,175,55,.08);box-shadow:0 0 0 3px rgba(212,175,55,.12)}
+.iw input::placeholder{color:rgba(136,145,170,.6)}
+.nhint{font-size:.8rem;color:var(--gray);margin-top:5px;text-align:right}
+.nerr{font-size:.85rem;color:var(--wrong);margin-top:5px;display:none}
+.btnp{width:100%;background:linear-gradient(135deg,var(--gold),#B8960C);color:var(--deep);border:none;border-radius:12px;padding:16px;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;cursor:pointer;box-shadow:0 8px 28px rgba(212,175,55,.35);transition:all .3s}
+.btnp:hover{transform:translateY(-2px)}
+.btnp:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.pills{display:flex;gap:18px;margin-top:22px}
+.pill{flex:1;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:11px 14px;text-align:center}
+.pill .n{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--gold);font-weight:700}
+.pill .l{font-size:.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
+/* quiz */
+#qz-scr{padding:20px;flex-direction:column}
+.qtop{position:relative;z-index:1;width:100%;max-width:750px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px}
+.qctr{font-size:.88rem;color:var(--gray);letter-spacing:1px}
+.qctr span{color:var(--gold);font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700}
+.twrap{display:flex;align-items:center;gap:7px}
+.tdisp{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);font-weight:700;min-width:58px;text-align:right}
+.tdisp.warn{color:var(--wrong);animation:blink .8s linear infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.pbar{width:100%;max-width:750px;height:5px;background:rgba(255,255,255,.1);border-radius:10px;margin-bottom:22px;z-index:1;position:relative}
+.pfill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transition:width .5s ease}
+.qcard{background:var(--card);border:1px solid rgba(212,175,55,.2);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 18px 56px rgba(0,0,0,.4);padding:40px 42px;max-width:750px;width:100%;position:relative;z-index:1}
+.ttag{display:inline-block;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);border:1px solid rgba(212,175,55,.2);border-radius:20px;padding:4px 13px;margin-bottom:16px}
+.qtxt{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:400;line-height:1.65;color:var(--white);margin-bottom:28px}
+.opts{display:flex;flex-direction:column;gap:11px}
+.opt{background:rgba(255,255,255,.05);border:1.5px solid rgba(212,175,55,.18);border-radius:13px;padding:15px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s;text-align:left;width:100%;color:var(--white);font-family:'Crimson Pro',serif;font-size:1.05rem}
+.opt:hover:not(.lk){background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.5);transform:translateX(4px)}
+.ol{min-width:31px;height:31px;border-radius:8px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--gold);transition:all .25s;flex-shrink:0}
+.opt.cr{background:var(--cbg)!important;border-color:var(--correct)!important}
+.opt.cr .ol{background:var(--correct);color:#fff;border-color:var(--correct)}
+.opt.wr{background:var(--wbg)!important;border-color:var(--wrong)!important}
+.opt.wr .ol{background:var(--wrong);color:#fff;border-color:var(--wrong)}
+.opt.lk{cursor:default}
+.fbar{min-height:40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.fmsg{font-size:.97rem;color:var(--gray)}
+.fmsg.cr{color:var(--correct)}
+.fmsg.wr{color:var(--wrong)}
+.btnn{background:linear-gradient(135deg,var(--gold),#B8960C);color:var(--deep);border:none;border-radius:10px;padding:12px 28px;font-family:'Playfair Display',serif;font-size:.97rem;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(212,175,55,.3);transition:all .25s;opacity:0;pointer-events:none}
+.btnn.vis{opacity:1;pointer-events:all}
+.btnn:hover{transform:translateY(-2px)}
+/* results */
+#rs-scr{flex-direction:column;padding:28px 20px}
+.rcard{background:var(--card);border:1px solid rgba(212,175,55,.25);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 24px 72px rgba(0,0,0,.5);padding:48px 44px;max-width:820px;width:100%;position:relative;z-index:1}
+.rhdr{text-align:center;margin-bottom:36px}
+.rtitle{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:var(--gold);margin-bottom:8px}
+.rsname{font-size:1.05rem;color:var(--gray);margin-bottom:26px}
+.ring-wrap{position:relative;width:155px;height:155px;margin:0 auto 26px}
+.ring-wrap svg{transform:rotate(-90deg)}
+.rbg{fill:none;stroke:rgba(212,175,55,.12);stroke-width:10}
+.rfill{fill:none;stroke:var(--gold);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+.rctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.rpct{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold)}
+.rpct-sym{font-size:1.1rem;color:var(--gold-dim)}
+.srow{display:flex;gap:14px;margin-bottom:32px}
+.sb{flex:1;background:rgba(255,255,255,.04);border-radius:14px;border:1px solid rgba(255,255,255,.08);padding:18px 14px;text-align:center}
+.sb .sn{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700}
+.sb .sl{font-size:.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px}
+.sb.g .sn{color:var(--correct)}
+.sb.r .sn{color:var(--wrong)}
+.sb.o .sn{color:var(--gold)}
+.gbadge{display:inline-block;font-family:'Playfair Display',serif;font-size:.97rem;padding:8px 22px;border-radius:30px;margin-bottom:18px;font-weight:700;letter-spacing:1px}
+.gA{background:rgba(39,174,96,.2);border:1px solid rgba(39,174,96,.5);color:var(--correct)}
+.gB{background:rgba(212,175,55,.2);border:1px solid rgba(212,175,55,.5);color:var(--gold)}
+.gC{background:rgba(231,76,60,.2);border:1px solid rgba(231,76,60,.5);color:var(--wrong)}
+/* wrong items */
+.wsec{margin-top:8px}
+.wstitle{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--gold);margin-bottom:16px;padding-bottom:11px;border-bottom:1px solid rgba(212,175,55,.2)}
+.wi{background:rgba(231,76,60,.07);border:1px solid rgba(231,76,60,.2);border-radius:15px;padding:20px 22px;margin-bottom:18px;animation:fi .4s ease}
+.wiq{font-size:1rem;color:var(--white);margin-bottom:12px;line-height:1.6}
+.wiq strong{color:var(--gold-dim);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:4px}
+.wians{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.wia{padding:7px 14px;border-radius:8px;font-size:.9rem;border:1px solid transparent}
+.wia.uw{background:var(--wbg);border-color:rgba(231,76,60,.4);color:var(--wrong)}
+.wia.ca{background:var(--cbg);border-color:rgba(39,174,96,.4);color:var(--correct)}
+.wia-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;display:block;opacity:.7;margin-bottom:1px}
+/* explain sections */
+.exp-sec{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.exp-hdr{font-size:.67rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.exp-hdr::before,.exp-hdr::after{content:'';flex:1;height:1px}
+.exp-hdr.wh{color:rgba(231,76,60,.85)}
+.exp-hdr.wh::before,.exp-hdr.wh::after{background:rgba(231,76,60,.25)}
+.exp-hdr.ch{color:rgba(39,174,96,.9)}
+.exp-hdr.ch::before,.exp-hdr.ch::after{background:rgba(39,174,96,.25)}
+/* wrong reason box */
+.exp-wb{background:rgba(231,76,60,.07);border:1px solid rgba(231,76,60,.25);border-left:3px solid var(--wrong);border-radius:10px;padding:13px 17px;display:flex;flex-direction:column;gap:9px}
+.exp-wen{font-family:'Crimson Pro',serif;font-size:.96rem;color:rgba(255,200,200,.92);line-height:1.7;padding-bottom:9px;border-bottom:1px solid rgba(231,76,60,.15)}
+.exp-war{font-family:'Noto Naskh Arabic',serif;font-size:1.02rem;color:rgba(255,185,185,.88);line-height:1.9;text-align:right;direction:rtl}
+/* correct reason box */
+.exp-cb{background:rgba(39,174,96,.07);border:1px solid rgba(39,174,96,.25);border-left:3px solid var(--correct);border-radius:10px;padding:13px 17px;display:flex;flex-direction:column;gap:9px}
+.exp-cen{font-family:'Crimson Pro',serif;font-size:.96rem;color:rgba(200,255,220,.92);line-height:1.7;padding-bottom:9px;border-bottom:1px solid rgba(39,174,96,.15)}
+.exp-car{font-family:'Noto Naskh Arabic',serif;font-size:1.02rem;color:rgba(185,255,205,.88);line-height:1.9;text-align:right;direction:rtl}
+/* footer */
+.rftr{text-align:center;margin-top:32px}
+.btnr{background:transparent;border:2px solid var(--gold);color:var(--gold);border-radius:12px;padding:14px 38px;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all .28s;letter-spacing:.5px}
+.btnr:hover{background:var(--gold);color:var(--deep)}
+/* scrollbar */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:4px}
+@media(max-width:600px){
+  .card,.qcard,.rcard{padding:24px 16px}
+  .qtxt{font-size:1.05rem}
+  .srow{flex-wrap:wrap}
+  .sb{min-width:calc(50% - 7px)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="cvs"></canvas>
+<div class="nb nb1"></div>
+<div class="nb nb2"></div>
+<div class="nb nb3"></div>
+
+<!-- TELEGRAM -->
+<div id="tg-scr" class="scr hidden">
+  <div class="card">
+    <div class="badge">
+      <span class="uni">Al-Mustaqbal University &middot; Babylon</span>
+      <div class="gline"></div>
+      <span class="dept">Department of English Language</span>
+    </div>
+    <div class="tgico">📢</div>
+    <div class="tgtitle">Join Our Channel First</div>
+    <div class="tgsub">Please join the official Telegram channel of the English Language Department before accessing the quiz.</div>
+    <div class="tgcount" id="tgNum">5</div>
+    <div class="tglbl">Redirecting in seconds…</div>
+    <br>
+    <a href="https://t.me/vgsscwe" target="_blank" class="btntg">✈️ &nbsp;Join Telegram Channel</a>
+    <br>
+    <div style="font-size:.83rem;color:var(--gray);margin-top:11px;">You will be redirected to login automatically.</div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="lg-scr" class="scr hidden">
+  <div class="card">
+    <div class="badge">
+      <span class="uni">Al-Mustaqbal University &middot; Babylon &middot; 2025–2026</span>
+      <div class="gline"></div>
+      <span class="dept">Department of English Language — Grammar Quiz</span>
+    </div>
+    <div class="ltitle">Parts of Speech</div>
+    <div class="lsub">Form Classes &amp; Structure Classes<br>Enter your full four-part name to begin.</div>
+    <div class="iw">
+      <label>Full Name / الاسم الرباعي</label>
+      <input type="text" id="nameIn" placeholder="e.g. Ahmed Ali Hassan Mohammed" autocomplete="off">
+      <div class="nhint" id="nhint">0 / 4 parts entered</div>
+      <div class="nerr" id="nerr">⚠ Please enter your full four-part name.</div>
+    </div>
+    <button class="btnp" id="startBtn" disabled onclick="startQuiz()">Begin Quiz →</button>
+    <div class="pills">
+      <div class="pill"><div class="n">100</div><div class="l">Questions</div></div>
+      <div class="pill"><div class="n">115</div><div class="l">Bank</div></div>
+      <div class="pill"><div class="n">60</div><div class="l">Min Limit</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="qz-scr" class="scr hidden" style="align-items:flex-start;justify-content:center;">
+  <div class="qtop">
+    <div class="qctr">Question <span id="qn">1</span> of <span id="qt">100</span></div>
+    <div class="twrap"><span style="color:var(--gold)">⏱</span><span class="tdisp" id="tdisp">60:00</span></div>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  <div class="qcard">
+    <div class="ttag" id="ttag">Topic</div>
+    <div class="qtxt" id="qtxt">Loading…</div>
+    <div class="opts" id="opts"></div>
+    <div class="fbar">
+      <div class="fmsg" id="fmsg"></div>
+      <button class="btnn" id="btnn" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="rs-scr" class="scr hidden" style="align-items:flex-start;justify-content:center;">
+  <div class="rcard">
+    <div class="rhdr">
+      <div class="rtitle">📋 Quiz Results</div>
+      <div class="rsname" id="rsname"></div>
+      <div class="gbadge" id="gbadge"></div>
+      <div class="ring-wrap">
+        <svg width="155" height="155" viewBox="0 0 155 155">
+          <circle class="rbg" cx="77.5" cy="77.5" r="67.5"/>
+          <circle class="rfill" id="rfill" cx="77.5" cy="77.5" r="67.5"
+                  stroke-dasharray="424.12" stroke-dashoffset="424.12"/>
+        </svg>
+        <div class="rctr"><span class="rpct" id="rpct">0</span><span class="rpct-sym">%</span></div>
+      </div>
+      <div class="srow">
+        <div class="sb o"><div class="sn" id="stot">100</div><div class="sl">Total</div></div>
+        <div class="sb g"><div class="sn" id="scor">0</div><div class="sl">Correct ✓</div></div>
+        <div class="sb r"><div class="sn" id="swrg">0</div><div class="sl">Wrong ✗</div></div>
+      </div>
+    </div>
+    <div class="wsec" id="wsec"></div>
+    <div class="rftr"><button class="btnr" onclick="retryQuiz()">↺ &nbsp;Retry Quiz</button></div>
+  </div>
+</div>
+
+<script>
+// ── STARS ──────────────────────────────────────────────
+(function(){
+  var cv=document.getElementById('cvs'),ctx=cv.getContext('2d'),st=[];
+  function resize(){cv.width=innerWidth;cv.height=innerHeight;}
+  function init(){
+    st=[];
+    var n=Math.floor(cv.width*cv.height/6500);
+    for(var i=0;i<n;i++) st.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.7+0.2,sp:Math.random()*0.007+0.003,ph:Math.random()*Math.PI*2});
+  }
+  function draw(t){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for(var i=0;i<st.length;i++){
+      var s=st[i],a=0.15+0.85*Math.abs(Math.sin(s.ph+t*s.sp));
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(255,255,255,'+a.toFixed(3)+')';ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',function(){resize();init();});
+  resize();init();draw(0);
+})();
+
+// ── QUESTION BANK (126 questions) ──────────────────────
+var QB=[
+// FORM CLASSES
+{t:"Groups of words that have lexical meaning, accept lexical endings, and serve different grammatical functions are called:",o:["Structure classes","Form classes","Function words","Inflectional classes"],a:1,tp:"Form Classes",
+ wr:"You chose an option that does not match the definition of form classes. Structure classes carry little meaning and don't inflect; function words/inflectional classes are not standard terminology for this definition.",
+ cr:"Form classes are defined as groups of words that carry lexical (dictionary) meaning, accept inflectional or derivational endings, and can serve various grammatical roles — e.g. nouns, verbs, adjectives, adverbs.",
+ war:"اخترت ما لا ينطبق على تعريف أصناف الصيغة. أصناف البنية تحمل معنى ضئيل ولا تتصرف.",
+ car:"أصناف الصيغة هي مجموعات الكلمات التي تحمل معنى معجمياً وتقبل اللواحق الصرفية وتؤدي وظائف نحوية متنوعة — مثل الأسماء والأفعال والصفات والظروف."},
+
+{t:"How many major form classes does the English language have?",o:["Three","Four","Five","Six"],a:2,tp:"Form Classes",
+ wr:"The number is neither three, four, nor six. You may be confusing form classes with other grammatical categories.",
+ cr:"English has exactly FIVE major form classes: nouns, verbs, adjectives, adverbs, and prepositions.",
+ war:"العدد ليس ثلاثة ولا أربعة ولا ستة. ربما خلطت بين أصناف الصيغة وفئات نحوية أخرى.",
+ car:"اللغة الإنجليزية لديها خمسة أصناف رئيسية للصيغة بالضبط: الأسماء والأفعال والصفات والظروف وحروف الجر."},
+
+{t:"Which of the following is NOT a form class?",o:["Nouns","Verbs","Prepositions","Adjectives"],a:2,tp:"Form Classes",
+ wr:"Nouns, verbs, and adjectives are all form classes — they inflect and carry meaning. You may have confused prepositions with a form class.",
+ cr:"Prepositions belong to STRUCTURE (function) classes, not form classes. They do not inflect, carry little lexical meaning, and form a closed set of about fifty members.",
+ war:"الأسماء والأفعال والصفات أصناف صيغة — تتصرف وتحمل معنى. ربما خلطت بين حروف الجر وأصناف الصيغة.",
+ car:"حروف الجر تنتمي إلى أصناف البنية الوظيفية، لا أصناف الصيغة. لا تتصرف ولا تحمل معنى معجمياً كاملاً."},
+
+{t:"Form classes are words that change their form through:",o:["Derivation only","Inflection","Compounding","Blending"],a:1,tp:"Form Classes",
+ wr:"Derivation creates new words but is not the defining feature of form classes. Compounding and blending are word-formation processes, not what defines form class membership.",
+ cr:"Form classes are defined by INFLECTION — adding grammatical endings to signal tense, number, degree, etc. (play → plays → played → playing).",
+ war:"الاشتقاق يكوّن كلمات جديدة لكنه ليس السمة المُعرِّفة لأصناف الصيغة. التركيب والمزج عمليات تكوين كلمات.",
+ car:"أصناف الصيغة تُعرَّف بالإعراب الصرفي — إضافة لواحق نحوية للتعبير عن الزمن والعدد والدرجة (play → plays → played → playing)."},
+
+{t:"Form classes contrast with which type of classes?",o:["Major classes","Structure (Function) classes","Open classes","Lexical classes"],a:1,tp:"Form Classes",
+ wr:"Form classes are not contrasted with major, open, or lexical classes in this context. These terms don't capture the correct distinction.",
+ cr:"Form classes contrast with STRUCTURE (Function) classes — which include pronouns, determiners, prepositions, and auxiliaries. These do not inflect and form closed, stable sets.",
+ war:"أصناف الصيغة لا تتقابل مع الأصناف الكبرى أو المفتوحة أو المعجمية في هذا السياق.",
+ car:"أصناف الصيغة تتقابل مع أصناف البنية الوظيفية — وتشمل الضمائر وأدوات التعريف وحروف الجر والأفعال المساعدة. لا تتصرف وتُشكّل مجموعات مغلقة."},
+
+{t:"Which of the following includes only form classes?",o:["Verbs, nouns, adverbs, adjectives","Prepositions, determiners, auxiliaries","Pronouns, qualifiers, determiners","Prepositions, conjunctions, articles"],a:0,tp:"Form Classes",
+ wr:"Options B, C, and D contain structure class words (prepositions, determiners, auxiliaries, pronouns, qualifiers, conjunctions, articles) — none of which are form classes.",
+ cr:"Verbs, nouns, adverbs, and adjectives are all FORM classes — they inflect and accept lexical endings. All other options include structure class words.",
+ war:"الخيارات B وC وD تحتوي كلمات أصناف بنية (حروف جر، أدوات، مساعدات، ضمائر) — لا شيء منها صنف صيغة.",
+ car:"الأفعال والأسماء والظروف والصفات جميعها أصناف صيغة — تتصرف وتقبل اللواحق المعجمية."},
+
+// NOUNS
+{t:"Nouns are words that name people, places, things, or:",o:["Actions","Abstract ideas","Qualities only","Relations"],a:1,tp:"Nouns",
+ wr:"Actions are expressed by verbs, not nouns. Qualities alone and relations are too narrow — nouns cover a much broader range including abstract concepts.",
+ cr:"Nouns name people (teacher), places (Baghdad), things (book), or ABSTRACT IDEAS (freedom, justice, love). Verbs express actions.",
+ war:"الأفعال هي التي تعبّر عن الأحداث، ليس الأسماء. الصفات والعلاقات وحدها لا تكفي.",
+ car:"الأسماء تسمّي الأشخاص (معلم) والأماكن (بغداد) والأشياء (كتاب) والأفكار المجردة (الحرية والعدالة). الأفعال هي التي تعبّر عن الأحداث."},
+
+{t:"A word that accepts plural (−s/−es) and possessive ('s) is called a:",o:["Verb","Adjective","Noun","Adverb"],a:2,tp:"Nouns",
+ wr:"Verbs take -ed/-ing/-s (3rd person), adjectives take -er/-est, adverbs usually take -ly — none accept both plural -s and possessive 's.",
+ cr:"NOUNS are identified by accepting plural endings (books, classes) and possessive markers (student's, teacher's). No other form class has both these features.",
+ war:"الأفعال تأخذ -ed/-ing، والصفات -er/-est، والظروف -ly — لا شيء منها يقبل الجمع والملكية معاً.",
+ car:"الأسماء تُعرف بقبول لاحقة الجمع (books, classes) وعلامة الملكية (student's, teacher's). لا صنف آخر يملك كلتا الخاصيتين."},
+
+{t:"In 'The student is reading a book,' the word 'student' functions as a:",o:["Object","Complement","Subject","Modifier"],a:2,tp:"Nouns",
+ wr:"An object receives the action; a complement renames/describes the subject; a modifier describes another word. None of these fit 'student' here.",
+ cr:"'Student' is the SUBJECT — it is the doer of the action 'is reading'. Subjects come before the verb and perform or experience the action.",
+ war:"المفعول به يستقبل الفعل؛ المكمّل يصف الفاعل؛ المُعدِّل يصف كلمة أخرى. لا شيء من هذا ينطبق على 'student' هنا.",
+ car:"'student' هو الفاعل — القائم بفعل القراءة. الفاعل يأتي قبل الفعل ويؤدي الفعل."},
+
+{t:"In 'I like sport,' the word 'sport' functions as a(n):",o:["Subject","Object","Complement","Gerund"],a:1,tp:"Nouns",
+ wr:"'I' is the subject; 'sport' is not a gerund here (no -ing) and not a complement (no linking verb). Sport is what is liked — it receives the action.",
+ cr:"'Sport' is the DIRECT OBJECT of the verb 'like'. It receives the action and answers 'What do I like? → sport'.",
+ war:"'I' هو الفاعل؛ 'sport' ليس gerund (لا يوجد -ing) وليس مكمّلاً (لا يوجد فعل رابط). الرياضة هي ما يُحبّ.",
+ car:"'sport' هو المفعول به المباشر للفعل 'like'. يستقبل الفعل ويجيب على 'ماذا أحب؟ → الرياضة'."},
+
+{t:"In 'He is a doctor,' the word 'doctor' functions as a:",o:["Subject","Object","Complement","Modifier"],a:2,tp:"Nouns",
+ wr:"'He' is the subject. 'Doctor' does not receive action (object) and does not describe another word (modifier) — it renames the subject through a linking verb.",
+ cr:"'Doctor' is a SUBJECT COMPLEMENT — it follows the linking verb 'is' and renames the subject 'He'. Subject complements follow linking verbs (be, seem, become).",
+ war:"'He' هو الفاعل. 'doctor' لا يستقبل فعلاً (مفعول) ولا يصف كلمة أخرى (مُعدِّل) — بل يُعيد تسمية الفاعل.",
+ car:"'doctor' مكمّل الفاعل — يأتي بعد الفعل الرابط 'is' ويُعيد تسمية الفاعل 'He'. المكمّلات تتبع الأفعال الرابطة (be, seem, become)."},
+
+{t:"The noun 'acceptance' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:1,tp:"Nouns – Derivation",
+ wr:"'Acceptance' is not derived from a noun, adjective, or adverb. The root is a verb.",
+ cr:"'Acceptance' = accept (VERB) + -ance. The suffix -ance derives nouns from verbs: accept→acceptance, resist→resistance, appear→appearance.",
+ war:"'acceptance' لا تشتق من اسم أو صفة أو ظرف. الجذر فعل.",
+ car:"acceptance = accept (فعل) + -ance. اللاحقة -ance تشتق الأسماء من الأفعال: accept←acceptance، resist←resistance."},
+
+{t:"The noun 'decision' is derived from a:",o:["Noun","Adjective","Verb","Pronoun"],a:2,tp:"Nouns – Derivation",
+ wr:"'Decision' does not come from a noun, adjective, or pronoun. Trace it back: decide → decision.",
+ cr:"'Decision' = decide (VERB) + -ion (with spelling change). The suffix -ion/-tion derives nouns from verbs: decide→decision, create→creation, act→action.",
+ war:"'decision' لا تأتي من اسم أو صفة أو ضمير. تتبّعها: decide → decision.",
+ car:"decision = decide (فعل) + -ion مع تغيير إملائي. -ion/-tion تشتق الأسماء من الأفعال: decide←decision، create←creation."},
+
+{t:"The noun 'importance' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:1,tp:"Nouns – Derivation",
+ wr:"Although 'importance' relates to 'important' (adjective), the direct derivational base is the verb, not the adjective.",
+ cr:"'Importance' = import (VERB) + -ance. The -ance suffix converts the verb directly into a noun.",
+ war:"رغم ارتباط 'importance' بالصفة 'important'، الأساس الاشتقاقي المباشر هو الفعل.",
+ car:"importance = import (فعل) + -ance. اللاحقة -ance تحوّل الفعل مباشرةً إلى اسم."},
+
+{t:"The noun 'booklet' is derived from a:",o:["Verb","Noun","Adjective","Adverb"],a:1,tp:"Nouns – Derivation",
+ wr:"'Booklet' is not from a verb, adjective, or adverb. The base word 'book' is itself a noun.",
+ cr:"'Booklet' = book (NOUN) + -let (diminutive suffix). The -let suffix forms a noun meaning a smaller version: book→booklet, drop→droplet, pig→piglet.",
+ war:"'booklet' ليست من فعل أو صفة أو ظرف. كلمة الأساس 'book' هي نفسها اسم.",
+ car:"booklet = book (اسم) + -let (لاحقة تصغير). -let تكوّن اسماً يدل على نسخة أصغر: book←booklet، drop←droplet."},
+
+{t:"The noun 'friendship' is derived from a:",o:["Verb","Adjective","Noun","Pronoun"],a:2,tp:"Nouns – Derivation",
+ wr:"'Friendship' is not built from a verb, adjective, or pronoun. The base 'friend' is a noun.",
+ cr:"'Friendship' = friend (NOUN) + -ship. The -ship suffix creates abstract nouns expressing a relationship or condition: friend→friendship, leader→leadership.",
+ war:"'friendship' ليست مبنية من فعل أو صفة أو ضمير. الأساس 'friend' اسم.",
+ car:"friendship = friend (اسم) + -ship. -ship تكوّن أسماءً مجردة تعبّر عن علاقة أو حالة: friend←friendship."},
+
+{t:"The noun 'purity' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Nouns – Derivation",
+ wr:"'Purity' is not from a noun, verb, or adverb. The base word 'pure' is an adjective.",
+ cr:"'Purity' = pure (ADJECTIVE) + -ity. The suffix -ity derives abstract nouns from adjectives: pure→purity, equal→equality, active→activity.",
+ war:"'purity' ليست من اسم أو فعل أو ظرف. كلمة الأساس 'pure' صفة.",
+ car:"purity = pure (صفة) + -ity. -ity تشتق الأسماء المجردة من الصفات: pure←purity، equal←equality."},
+
+{t:"The noun 'wisdom' is derived from an:",o:["Noun","Verb","Adverb","Adjective"],a:3,tp:"Nouns – Derivation",
+ wr:"'Wisdom' is not from a noun, verb, or adverb. The base 'wise' is an adjective.",
+ cr:"'Wisdom' = wise (ADJECTIVE) + -dom (spelling change). The suffix -dom derives nouns from adjectives: wise→wisdom, free→freedom.",
+ war:"'wisdom' ليست من اسم أو فعل أو ظرف. الأساس 'wise' صفة.",
+ car:"wisdom = wise (صفة) + -dom مع تغيير إملائي. -dom تشتق الأسماء من الصفات: wise←wisdom، free←freedom."},
+
+// VERBS
+{t:"Verbs are words that express actions or:",o:["Qualities","Positions","States of being","Descriptions"],a:2,tp:"Verbs",
+ wr:"Qualities are expressed by adjectives; positions by prepositions; descriptions by adjectives/adverbs — none of these define verbs.",
+ cr:"Verbs express either ACTIONS (run, write, speak) or STATES OF BEING (be, seem, exist, feel). The state-of-being function is just as important as action.",
+ war:"الصفات تعبّر عن الصفات؛ حروف الجر عن المواضع؛ الوصف وظيفة الصفات والظروف — لا شيء من هذا يعرّف الأفعال.",
+ car:"الأفعال تعبّر عن الأحداث (run, write) أو حالات الوجود (be, seem, exist, feel). وظيفة حالة الوجود بنفس أهمية الحدث."},
+
+{t:"Verbs have a maximum of how many different inflectional forms?",o:["Three","Four","Six","Five"],a:3,tp:"Verbs",
+ wr:"Three, four, and six are all incorrect. English verbs have exactly five possible inflectional forms.",
+ cr:"English verbs have up to FIVE inflectional forms: (1) stem: arrive, (2) past -ed: arrived, (3) past participle -en/-ed: written/arrived, (4) present participle -ing: arriving, (5) 3rd person -s: arrives.",
+ war:"ثلاثة وأربعة وستة جميعها غير صحيح. للأفعال الإنجليزية خمس صور تصريفية بالضبط.",
+ car:"للأفعال الإنجليزية ما يصل إلى خمس صور: (1) الجذع: arrive، (2) الماضي: arrived، (3) المفعول المصدري: written/arrived، (4) اسم الفاعل: arriving، (5) الغائب: arrives."},
+
+{t:"The stem form of a verb is:",o:["The past form","The verb in its simple form","The −ing form","The third person form"],a:1,tp:"Verbs",
+ wr:"The past, -ing, and third person are inflected forms built from the stem — they are not the stem itself.",
+ cr:"The STEM (base form) is the verb in its simplest, uninflected form — as listed in a dictionary: arrive, play, write. All inflectional endings are added to this base.",
+ war:"الماضي و-ing والغائب كلها صور متصرفة مبنية من الجذع — وليست الجذع نفسه.",
+ car:"الصورة الجذعية هي الفعل في أبسط صوره غير المتصرفة — كما في القاموس: arrive, play, write. جميع اللواحق الصرفية تُضاف إلى هذا الأساس."},
+
+{t:"Which inflectional ending marks the past tense of regular verbs?",o:["-ing","-s","-ed (past)","-en"],a:2,tp:"Verbs",
+ wr:"-ing marks present participle; -s marks third person singular present; -en marks past participle of some irregular verbs. None of these mark regular past tense.",
+ cr:"Regular verbs form the PAST TENSE by adding -ed: play→played, walk→walked, arrive→arrived. This is the standard inflection for regular past tense.",
+ war:"-ing للمضارع المستمر؛ -s للغائب؛ -en للمفعول المصدري الشاذ. لا شيء من هذا يُعلّم الماضي المنتظم.",
+ car:"الأفعال المنتظمة تُكوّن الماضي بإضافة -ed: play←played، walk←walked، arrive←arrived."},
+
+{t:"Which inflectional ending marks the past participle?",o:["-s","-ing","-ed (past)","-en / -ed (past participle)"],a:3,tp:"Verbs",
+ wr:"The -s marks 3rd person present; -ing marks present participle; -ed alone marks regular past tense. The past participle uses -en OR -ed but in a different grammatical role.",
+ cr:"The PAST PARTICIPLE uses -en (irregular: written, spoken, gone) or -ed (regular: finished, played). Used with 'have' in perfect tenses and 'be' in passive voice.",
+ war:"-s للغائب؛ -ing للمضارع المستمر؛ -ed وحده للماضي المنتظم. المفعول المصدري يستخدم -en أو -ed لكن في دور نحوي مختلف.",
+ car:"المفعول المصدري يستخدم -en للشاذة (written, spoken) أو -ed للمنتظمة (finished). يُستخدم مع 'have' في التام ومع 'be' في المجهول."},
+
+{t:"In 'She has not written her homework,' 'written' is in the _____ form.",o:["Simple stem","Past tense","Past participle","Present participle"],a:2,tp:"Verbs",
+ wr:"The simple stem is 'write'; the past tense is 'wrote'; the present participle is 'writing'. The form used after 'has' is specifically the past participle.",
+ cr:"'Written' is the PAST PARTICIPLE of the irregular verb 'write' (write → wrote → written). It follows 'has', forming the present perfect tense.",
+ war:"الجذع البسيط هو 'write'؛ الماضي 'wrote'؛ المضارع المستمر 'writing'. الصورة المستخدمة بعد 'has' هي المفعول المصدري تحديداً.",
+ car:"'written' المفعول المصدري للفعل الشاذ 'write' (write → wrote → written). يتبع 'has' مُكوِّناً المضارع التام."},
+
+{t:"In 'I am reading a book,' 'reading' is in the _____ form.",o:["Simple stem","Past tense","Past participle","Present participle"],a:3,tp:"Verbs",
+ wr:"The stem is 'read'; the past tense of 'read' is also 'read'; the past participle is 'read'. The -ing form used with 'am' is the present participle.",
+ cr:"'Reading' is the PRESENT PARTICIPLE (stem + -ing). Used with 'am' (auxiliary be) it forms the present progressive, indicating an ongoing action.",
+ war:"الجذع 'read'؛ الماضي 'read'؛ المفعول المصدري 'read'. الصورة -ing المستخدمة مع 'am' هي اسم الفاعل الحاضر.",
+ car:"'reading' اسم الفاعل الحاضر (الجذع + -ing). مع المساعد 'am' يُكوِّن المضارع المستمر للدلالة على حدث جارٍ."},
+
+{t:"Which ending marks the third person singular present of verbs?",o:["-ed","-ing","-en","-s"],a:3,tp:"Verbs",
+ wr:"-ed marks past tense; -ing marks present participle; -en marks some past participles. None of these signal the third person singular present.",
+ cr:"The -s ending marks the THIRD PERSON SINGULAR PRESENT: He arrives, She speaks, It runs. This inflection is obligatory with he/she/it in simple present.",
+ war:"-ed للماضي؛ -ing للمضارع المستمر؛ -en لبعض المفاعيل المصدرية. لا شيء منها يُشير إلى الغائب المفرد الحاضر.",
+ car:"اللاحقة -s تُعلّم المضارع للمفرد الغائب: He arrives, She speaks, It runs. هذا التصريف إلزامي مع (he/she/it) في المضارع البسيط."},
+
+{t:"In 'He arrives early,' 'arrives' uses which inflectional ending?",o:["-ing","-ed","-s","-en"],a:2,tp:"Verbs",
+ wr:"-ing would give 'arriving'; -ed would give 'arrived'; -en is not used here. The form 'arrives' ends in -s.",
+ cr:"'Arrives' = arrive + -s. This is the third person singular present inflection, used because the subject 'He' is 3rd person singular.",
+ war:"-ing ستُعطي 'arriving'؛ -ed ستُعطي 'arrived'؛ -en لا تُستخدم هنا. الصورة 'arrives' تنتهي بـ -s.",
+ car:"arrives = arrive + -s. هذه لاحقة الغائب المفرد المضارع، تُستخدم لأن الفاعل 'He' مفرد غائب."},
+
+{t:"In 'Mary speaks English well,' 'speaks' functions as a:",o:["Auxiliary verb","Main verb","Modal verb","Linking verb only"],a:1,tp:"Verbs",
+ wr:"Auxiliaries support another verb (have, be, do); modals express ability/possibility (can, will); linking verbs connect subject to complement (be, seem). 'Speaks' is the primary action verb.",
+ cr:"'Speaks' is the MAIN (lexical) verb — it carries the full meaning and expresses the action. It is the principal verb in the clause.",
+ war:"الأفعال المساعدة تدعم فعلاً آخر (have, be)؛ الشرطيات تعبّر عن القدرة (can, will)؛ الرابطة تربط الفاعل بالمكمّل (be, seem). 'speaks' هو الفعل الرئيسي.",
+ car:"'speaks' الفعل الرئيسي المعجمي — يحمل المعنى الكامل ويعبّر عن الفعل. هو الفعل الأساسي في الجملة."},
+
+{t:"In 'We have been shopping,' 'have' functions as a(n):",o:["Main verb","Adjective","Auxiliary verb","Determiner"],a:2,tp:"Verbs",
+ wr:"'Have' is not the main verb here (shopping is), not an adjective, and not a determiner. Its role is to support the main verb.",
+ cr:"'Have' is an AUXILIARY (helping) verb used with 'been' and the main verb 'shopping' to form the present perfect progressive tense.",
+ war:"'have' ليس الفعل الرئيسي هنا ('shopping' هو الرئيسي)، وليس صفة، وليس أداة تحديد. دوره دعم الفعل الرئيسي.",
+ car:"'have' فعل مساعد يُستخدم مع 'been' والفعل الرئيسي 'shopping' لتكوين المضارع التام المستمر."},
+
+{t:"The verb 'go' has _____ inflected forms.",o:["Two","Three","Four","Five"],a:3,tp:"Verbs",
+ wr:"Go has more than two, three, or four forms. Consider all its forms: go, goes, went, gone, going.",
+ cr:"'Go' has FIVE forms: go (stem), goes (-s), went (past — irregular), gone (past participle), going (-ing). Irregular verbs often have unique forms.",
+ war:"go لها أكثر من اثنتين أو ثلاث أو أربع. فكّر في جميع صورها: go, goes, went, gone, going.",
+ car:"'go' لها خمس صور: go (جذع)، goes (-s)، went (ماضٍ شاذ)، gone (مفعول مصدري)، going (-ing)."},
+
+{t:"In 'The girl has written a letter,' which is the correct past participle of 'write'?",o:["Write","Writes","Wrote","Written"],a:3,tp:"Verbs",
+ wr:"'Write' is the stem; 'writes' is the 3rd person present; 'wrote' is the simple past. The form used after 'has' must be the past participle.",
+ cr:"'Written' is the PAST PARTICIPLE of the irregular verb 'write': write (stem) → wrote (past) → written (past participle). Used after 'has/have'.",
+ war:"'write' الجذع؛ 'writes' الغائب المضارع؛ 'wrote' الماضي البسيط. الصورة المستخدمة بعد 'has' يجب أن تكون المفعول المصدري.",
+ car:"'written' المفعول المصدري للفعل الشاذ 'write': write (جذع) → wrote (ماضٍ) → written (مفعول مصدري). يُستخدم بعد has/have."},
+
+{t:"In 'The mines had been swept away,' 'swept' occurs in the:",o:["Simple stem","Past tense","Past participle","Present participle"],a:2,tp:"Verbs",
+ wr:"The stem of 'sweep' is 'sweep'; the past tense is 'swept' but here it follows 'had been' which requires a past participle; the present participle would be 'sweeping'.",
+ cr:"'Swept' is the PAST PARTICIPLE of 'sweep'. Following 'had been', it is used in the past perfect passive — a classic past participle position.",
+ war:"جذع 'sweep' هو 'sweep'؛ الماضي هو 'swept' لكنه هنا يتبع 'had been' الذي يتطلب مفعولاً مصدرياً.",
+ car:"'swept' المفعول المصدري لـ 'sweep'. يأتي بعد 'had been' في الماضي التام للمجهول — موضع كلاسيكي للمفعول المصدري."},
+
+{t:"The verb 'beautify' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:0,tp:"Verbs – Derivation",
+ wr:"'Beautify' does not come from a verb, adjective, or adverb. The root word 'beauty' is a noun.",
+ cr:"'Beautify' = beauty (NOUN) + -ify. The -ify suffix converts nouns (and sometimes adjectives) into verbs: beauty→beautify, class→classify.",
+ war:"'beautify' لا تأتي من فعل أو صفة أو ظرف. جذر الكلمة 'beauty' اسم.",
+ car:"beautify = beauty (اسم) + -ify. -ify تحوّل الأسماء (وأحياناً الصفات) إلى أفعال: beauty←beautify، class←classify."},
+
+{t:"The verb 'lengthen' is derived from a:",o:["Adjective","Noun","Verb","Pronoun"],a:1,tp:"Verbs – Derivation",
+ wr:"'Lengthen' does not come from an adjective, another verb, or a pronoun. The base 'length' is a noun.",
+ cr:"'Lengthen' = length (NOUN) + -en. The -en suffix derives verbs from nouns or adjectives: length→lengthen, dark→darken, bright→brighten.",
+ war:"'lengthen' لا تأتي من صفة أو فعل آخر أو ضمير. الأساس 'length' اسم.",
+ car:"lengthen = length (اسم) + -en. -en تشتق الأفعال من الأسماء أو الصفات: length←lengthen، dark←darken."},
+
+{t:"The verb 'save' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Verbs – Derivation",
+ wr:"'Save' is not derived from a noun, another verb, or adverb. The spelling change (f→v) connects it to an adjective.",
+ cr:"'Save' comes from the ADJECTIVE 'safe' with a sound/spelling change (f→v). safe (adj) → save (verb). This is verb derivation from an adjective.",
+ war:"'save' ليست مشتقة من اسم أو فعل آخر أو ظرف. التغيير الإملائي (f←v) يربطها بصفة.",
+ car:"'save' تأتي من الصفة 'safe' مع تغيير صوتي/إملائي (f←v). safe (صفة) ← save (فعل). هذا اشتقاق الفعل من صفة."},
+
+{t:"In 'This paragraph will weaken your paper,' 'weaken' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Verbs – Derivation",
+ wr:"'Weaken' is not from a noun, another verb, or adverb. It is built by adding -en to an adjective.",
+ cr:"'Weaken' = weak (ADJECTIVE) + -en. The -en suffix commonly forms verbs from adjectives: weak→weaken, dark→darken, hard→harden.",
+ war:"'weaken' ليست من اسم أو فعل آخر أو ظرف. تُبنى بإضافة -en إلى صفة.",
+ car:"weaken = weak (صفة) + -en. -en تُكوِّن الأفعال من الصفات عادةً: weak←weaken، dark←darken، hard←harden."},
+
+{t:"The derived verb of the adjective 'safe' is:",o:["Savings","Save","Safety","Safely"],a:1,tp:"Verbs – Derivation",
+ wr:"'Savings' and 'safety' are nouns; 'safely' is an adverb. Only one option is the verb form derived from the adjective 'safe'.",
+ cr:"The verb derived from 'safe' is SAVE (with f→v change). savings=noun, safety=noun, safely=adverb — only 'save' is a verb.",
+ war:"'savings' و'safety' أسماء؛ 'safely' ظرف. فقط خيار واحد هو الفعل المشتق من الصفة 'safe'.",
+ car:"الفعل المشتق من 'safe' هو 'save' مع تغيير f←v. savings=اسم، safety=اسم، safely=ظرف — فقط 'save' فعل."},
+
+// ADJECTIVES
+{t:"An adjective is a word that modifies or describes a noun or:",o:["Verb","Adverb","Pronoun","Preposition"],a:2,tp:"Adjectives",
+ wr:"Adjectives do not modify verbs (adverbs do that), adverbs (other adverbs do), or prepositions. Adjectives modify nouns AND pronouns.",
+ cr:"Adjectives modify NOUNS and PRONOUNS. Example: 'She is intelligent' — 'intelligent' describes the pronoun 'she'. Adverbs modify verbs/adjectives/adverbs.",
+ war:"الصفات لا تعدّل الأفعال (الظروف تفعل ذلك)، ولا الظروف، ولا حروف الجر. الصفات تعدّل الأسماء والضمائر.",
+ car:"الصفات تعدّل الأسماء والضمائر. مثال: 'She is intelligent' — 'intelligent' تصف الضمير 'she'. الظروف تعدّل الأفعال والصفات."},
+
+{t:"A word inflected with −er and −est, capable of forming adverbs with −ly, is called a(n):",o:["Adverb","Adjective","Noun","Verb"],a:1,tp:"Adjectives",
+ wr:"Adverbs don't typically take -er/-est. Nouns take -s/-'s. Verbs take -ed/-ing. Only adjectives have all these features together.",
+ cr:"ADJECTIVES take comparative (-er: taller) and superlative (-est: tallest). They form adverbs with -ly (quick→quickly) and nouns with -ness (kind→kindness).",
+ war:"الظروف لا تأخذ -er/-est عادةً. الأسماء تأخذ -s/-'s. الأفعال تأخذ -ed/-ing. فقط الصفات لديها جميع هذه الخصائص.",
+ car:"الصفات تأخذ المقارنة (-er: taller) والتفضيل (-est: tallest). تكوّن ظروفاً بـ -ly (quick←quickly) وأسماء بـ -ness."},
+
+{t:"Which of the following is an example of an adjective used independently?",o:["She sings loudly.","That is a really good book.","I walk fast.","He must study."],a:1,tp:"Adjectives",
+ wr:"'Loudly' and 'fast' are adverbs; 'must' is a modal auxiliary. Only one option contains an adjective modifying a noun.",
+ cr:"In 'That is a really good book,' 'good' is an ADJECTIVE modifying the noun 'book'. 'Loudly' and 'fast' are adverbs; 'must' is a modal auxiliary.",
+ war:"'Loudly' و'fast' ظروف؛ 'must' فعل مساعد شرطي. فقط خيار واحد يحتوي صفة تعدّل اسماً.",
+ car:"في 'That is a really good book'، 'good' صفة تعدّل الاسم 'book'. 'Loudly' و'fast' ظروف؛ 'must' مساعد شرطي."},
+
+{t:"The adjective 'aged' is derived from a:",o:["Verb","Adjective","Noun","Adverb"],a:2,tp:"Adjectives – Derivation",
+ wr:"'Aged' is not from a verb, another adjective, or adverb. The base word 'age' is a noun.",
+ cr:"'Aged' = age (NOUN) + -d/-ed. The -ed suffix converts nouns into adjectives meaning 'having the quality of': age→aged, talent→talented.",
+ war:"'aged' ليست من فعل أو صفة أخرى أو ظرف. كلمة الأساس 'age' اسم.",
+ car:"aged = age (اسم) + -d/-ed. -ed تحوّل الأسماء إلى صفات تعني 'ذو هذه الصفة': age←aged، talent←talented."},
+
+{t:"The adjective 'cultural' is derived from a:",o:["Verb","Noun","Adverb","Adjective"],a:1,tp:"Adjectives – Derivation",
+ wr:"'Cultural' is not from a verb, adverb, or another adjective. The base 'culture' is a noun.",
+ cr:"'Cultural' = culture (NOUN) + -al. The -al suffix is a common suffix deriving adjectives from nouns: culture→cultural, nation→national, logic→logical.",
+ war:"'cultural' ليست من فعل أو ظرف أو صفة أخرى. الأساس 'culture' اسم.",
+ car:"cultural = culture (اسم) + -al. -al لاحقة شائعة لاشتقاق الصفات من الأسماء: culture←cultural، nation←national."},
+
+{t:"The adjective 'fortunate' is derived from a:",o:["Verb","Adjective","Noun","Adverb"],a:2,tp:"Adjectives – Derivation",
+ wr:"'Fortunate' is not from a verb, another adjective, or adverb. Trace back to the noun base.",
+ cr:"'Fortunate' = fortune (NOUN) + -ate. The -ate suffix derives adjectives from nouns: fortune→fortunate, passion→passionate.",
+ war:"'fortunate' ليست من فعل أو صفة أخرى أو ظرف. ارجع إلى الأساس الاسمي.",
+ car:"fortunate = fortune (اسم) + -ate. -ate تشتق الصفات من الأسماء: fortune←fortunate، passion←passionate."},
+
+{t:"The adjective 'scientific' is derived from a:",o:["Verb","Adverb","Adjective","Noun"],a:3,tp:"Adjectives – Derivation",
+ wr:"'Scientific' is not from a verb, adverb, or another adjective. The base 'science' is a noun.",
+ cr:"'Scientific' = science (NOUN) + -ific (with spelling modification). The -ic/-ific suffix forms adjectives from nouns: science→scientific, angel→angelic.",
+ war:"'scientific' ليست من فعل أو ظرف أو صفة أخرى. الأساس 'science' اسم.",
+ car:"scientific = science (اسم) + -ific مع تعديل إملائي. -ic/-ific تكوّن الصفات من الأسماء: science←scientific."},
+
+{t:"The adjective 'wooden' is derived from a:",o:["Adjective","Noun","Verb","Adverb"],a:1,tp:"Adjectives – Derivation",
+ wr:"'Wooden' is not from another adjective, a verb, or an adverb. The base 'wood' is a noun.",
+ cr:"'Wooden' = wood (NOUN) + -en. The -en suffix derives adjectives from nouns: wood→wooden (made of wood), gold→golden, silk→silken.",
+ war:"'wooden' ليست من صفة أخرى أو فعل أو ظرف. الأساس 'wood' اسم.",
+ car:"wooden = wood (اسم) + -en. -en تشتق الصفات من الأسماء: wood←wooden (مصنوع من الخشب)، gold←golden."},
+
+{t:"The adjective 'collective' is derived from a:",o:["Verb","Adjective","Noun","Adverb"],a:0,tp:"Adjectives – Derivation",
+ wr:"'Collective' is not from another adjective, noun, or adverb. The base 'collect' is a verb.",
+ cr:"'Collective' = collect (VERB) + -ive. The -ive suffix derives adjectives from verbs: collect→collective, act→active, create→creative.",
+ war:"'collective' ليست من صفة أخرى أو اسم أو ظرف. الأساس 'collect' فعل.",
+ car:"collective = collect (فعل) + -ive. -ive تشتق الصفات من الأفعال: collect←collective، act←active."},
+
+{t:"The adjective 'continual' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:1,tp:"Adjectives – Derivation",
+ wr:"'Continual' is not from a noun, another adjective, or adverb. The base 'continue' is a verb.",
+ cr:"'Continual' = continue (VERB) + -al (with spelling modification). Here the -al suffix derives an adjective from a verb.",
+ war:"'continual' ليست من اسم أو صفة أخرى أو ظرف. الأساس 'continue' فعل.",
+ car:"continual = continue (فعل) + -al مع تعديل إملائي. هنا -al تشتق الصفة من الفعل."},
+
+{t:"The adjective 'deadly' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Adjectives – Derivation",
+ wr:"'Deadly' is not from a noun, verb, or adverb. The base 'dead' is itself an adjective.",
+ cr:"'Deadly' = dead (ADJECTIVE) + -ly. Here -ly forms an adjective from another adjective (unusual — -ly normally forms adverbs, but not always).",
+ war:"'deadly' ليست من اسم أو فعل أو ظرف. الأساس 'dead' صفة.",
+ car:"deadly = dead (صفة) + -ly. هنا -ly تكوّن صفة من صفة أخرى (غير معتاد — -ly عادةً تكوّن ظروفاً)."},
+
+// ADVERBS
+{t:"An adverb is a word that modifies verbs, adjectives, or other:",o:["Nouns","Adverbs","Pronouns","Prepositions"],a:1,tp:"Adverbs",
+ wr:"Adverbs do not typically modify nouns (adjectives do), pronouns, or prepositions. The three targets of adverb modification are verbs, adjectives, and other adverbs.",
+ cr:"Adverbs modify: (1) VERBS — 'She sang loudly'; (2) ADJECTIVES — 'extremely cold'; (3) OTHER ADVERBS — 'very quickly'. They do not modify nouns.",
+ war:"الظروف لا تعدّل الأسماء عادةً (الصفات تفعل ذلك)، ولا الضمائر، ولا حروف الجر. الثلاثة المستهدفة للتعديل هي الأفعال والصفات والظروف الأخرى.",
+ car:"الظروف تعدّل: (1) الأفعال — 'She sang loudly'؛ (2) الصفات — 'extremely cold'؛ (3) ظروف أخرى — 'very quickly'. لا تعدّل الأسماء."},
+
+{t:"The most commonly used suffix for forming English adverbs is:",o:["-ness","-ward","-ly","-ful"],a:2,tp:"Adverbs",
+ wr:"-ness derives nouns from adjectives; -ward forms directional adverbs (cityward) but is far less common; -ful forms adjectives. One suffix dominates adverb formation.",
+ cr:"The suffix -LY is by far the most common adverb-forming suffix: quickly, softly, carefully, fortunately, happily. It is added to adjectives to form manner adverbs.",
+ war:"-ness تشتق الأسماء من الصفات؛ -ward تكوّن ظروف الاتجاه لكنها أقل شيوعاً؛ -ful تكوّن الصفات. لاحقة واحدة تهيمن على تكوين الظروف.",
+ car:"-ly هي الأشيع في تكوين الظروف: quickly, softly, carefully, fortunately. تُضاف إلى الصفات لتكوين ظروف الأسلوب."},
+
+{t:"The adverb 'fortunately' is derived from an:",o:["Noun","Verb","Adverb","Adjective"],a:3,tp:"Adverbs",
+ wr:"'Fortunately' is not from a nou#login-screen .card{text-align:center;}
 .login-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:8px;}
 .login-sub{color:var(--gray);font-size:1.05rem;margin-bottom:32px;line-height:1.6;}
 .input-wrap{position:relative;margin-bottom:24px;text-align:left;}
