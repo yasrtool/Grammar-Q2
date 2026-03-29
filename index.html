@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parts of Speech Quiz | Al-Mustaqbal University</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@400;600&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4AF37;--gold-dim:#8B722A;--gold-light:#F0D060;
+  --deep:#040714;--card:rgba(15,20,55,0.88);
+  --white:#F5F0E8;--gray:#8891AA;
+  --correct:#27AE60;--wrong:#E74C3C;
+  --cbg:rgba(39,174,96,0.18);--wbg:rgba(231,76,60,0.18);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--deep);color:var(--white);min-height:100vh;overflow-x:hidden}
+/* stars */
+#cvs{position:fixed;inset:0;pointer-events:none;z-index:0}
+/* nebula */
+.nb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:nf 12s ease-in-out infinite}
+.nb1{width:480px;height:480px;background:rgba(100,60,200,.12);top:-80px;left:-80px}
+.nb2{width:400px;height:400px;background:rgba(212,175,55,.08);bottom:-80px;right:-80px;animation-delay:-6s}
+.nb3{width:340px;height:340px;background:rgba(30,80,200,.1);top:45%;left:58%;animation-delay:-3s}
+@keyframes nf{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(22px,-22px) scale(1.07)}}
+/* screens */
+.scr{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;animation:fi .5s ease}
+.hidden{display:none!important}
+@keyframes fi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+/* card */
+.card{background:var(--card);border:1px solid rgba(212,175,55,.25);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 24px 72px rgba(0,0,0,.5);padding:48px 44px;max-width:660px;width:100%}
+/* dept badge */
+.badge{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:28px}
+.badge .uni{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+.badge .dept{font-size:15px;color:var(--gold);letter-spacing:1px;text-align:center}
+.gline{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:6px auto}
+/* telegram */
+#tg-scr .card{text-align:center}
+.tgico{font-size:78px;margin:18px 0;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.tgtitle{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:var(--gold);margin-bottom:10px}
+.tgsub{font-size:1.05rem;color:var(--gray);line-height:1.7;margin-bottom:28px}
+.tgcount{font-family:'Playfair Display',serif;font-size:3.4rem;font-weight:900;color:var(--gold);margin:18px 0}
+.tglbl{font-size:.85rem;color:var(--gray);letter-spacing:2px;text-transform:uppercase}
+.btntg{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#229ED9,#1a7bb0);color:#fff;border:none;border-radius:50px;padding:15px 34px;font-size:1.05rem;font-family:'Crimson Pro',serif;font-weight:600;cursor:pointer;text-decoration:none;box-shadow:0 8px 28px rgba(34,158,217,.4);transition:transform .3s}
+.btntg:hover{transform:translateY(-3px)}
+/* login */
+#lg-scr .card{text-align:center}
+.ltitle{font-family:'Playfair Display',serif;font-size:1.95rem;font-weight:700;color:var(--gold);margin-bottom:8px}
+.lsub{color:var(--gray);font-size:1rem;margin-bottom:30px;line-height:1.65}
+.iw{margin-bottom:22px;text-align:left}
+.iw label{display:block;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:7px}
+.iw input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:15px 18px;color:var(--white);font-family:'Crimson Pro',serif;font-size:1.1rem;transition:all .3s;outline:none}
+.iw input:focus{border-color:var(--gold);background:rgba(212,175,55,.08);box-shadow:0 0 0 3px rgba(212,175,55,.12)}
+.iw input::placeholder{color:rgba(136,145,170,.6)}
+.nhint{font-size:.8rem;color:var(--gray);margin-top:5px;text-align:right}
+.nerr{font-size:.85rem;color:var(--wrong);margin-top:5px;display:none}
+.btnp{width:100%;background:linear-gradient(135deg,var(--gold),#B8960C);color:var(--deep);border:none;border-radius:12px;padding:16px;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;cursor:pointer;box-shadow:0 8px 28px rgba(212,175,55,.35);transition:all .3s}
+.btnp:hover{transform:translateY(-2px)}
+.btnp:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.pills{display:flex;gap:18px;margin-top:22px}
+.pill{flex:1;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:11px 14px;text-align:center}
+.pill .n{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--gold);font-weight:700}
+.pill .l{font-size:.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
+/* quiz */
+#qz-scr{padding:20px;flex-direction:column}
+.qtop{position:relative;z-index:1;width:100%;max-width:750px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px}
+.qctr{font-size:.88rem;color:var(--gray);letter-spacing:1px}
+.qctr span{color:var(--gold);font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700}
+.twrap{display:flex;align-items:center;gap:7px}
+.tdisp{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);font-weight:700;min-width:58px;text-align:right}
+.tdisp.warn{color:var(--wrong);animation:blink .8s linear infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.pbar{width:100%;max-width:750px;height:5px;background:rgba(255,255,255,.1);border-radius:10px;margin-bottom:22px;z-index:1;position:relative}
+.pfill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transition:width .5s ease}
+.qcard{background:var(--card);border:1px solid rgba(212,175,55,.2);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 18px 56px rgba(0,0,0,.4);padding:40px 42px;max-width:750px;width:100%;position:relative;z-index:1}
+.ttag{display:inline-block;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);border:1px solid rgba(212,175,55,.2);border-radius:20px;padding:4px 13px;margin-bottom:16px}
+.qtxt{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:400;line-height:1.65;color:var(--white);margin-bottom:28px}
+.opts{display:flex;flex-direction:column;gap:11px}
+.opt{background:rgba(255,255,255,.05);border:1.5px solid rgba(212,175,55,.18);border-radius:13px;padding:15px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s;text-align:left;width:100%;color:var(--white);font-family:'Crimson Pro',serif;font-size:1.05rem}
+.opt:hover:not(.lk){background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.5);transform:translateX(4px)}
+.ol{min-width:31px;height:31px;border-radius:8px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--gold);transition:all .25s;flex-shrink:0}
+.opt.cr{background:var(--cbg)!important;border-color:var(--correct)!important}
+.opt.cr .ol{background:var(--correct);color:#fff;border-color:var(--correct)}
+.opt.wr{background:var(--wbg)!important;border-color:var(--wrong)!important}
+.opt.wr .ol{background:var(--wrong);color:#fff;border-color:var(--wrong)}
+.opt.lk{cursor:default}
+.fbar{min-height:40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.fmsg{font-size:.97rem;color:var(--gray)}
+.fmsg.cr{color:var(--correct)}
+.fmsg.wr{color:var(--wrong)}
+.btnn{background:linear-gradient(135deg,var(--gold),#B8960C);color:var(--deep);border:none;border-radius:10px;padding:12px 28px;font-family:'Playfair Display',serif;font-size:.97rem;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(212,175,55,.3);transition:all .25s;opacity:0;pointer-events:none}
+.btnn.vis{opacity:1;pointer-events:all}
+.btnn:hover{transform:translateY(-2px)}
+/* results */
+#rs-scr{flex-direction:column;padding:28px 20px}
+.rcard{background:var(--card);border:1px solid rgba(212,175,55,.25);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 24px 72px rgba(0,0,0,.5);padding:48px 44px;max-width:820px;width:100%;position:relative;z-index:1}
+.rhdr{text-align:center;margin-bottom:36px}
+.rtitle{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:var(--gold);margin-bottom:8px}
+.rsname{font-size:1.05rem;color:var(--gray);margin-bottom:26px}
+.ring-wrap{position:relative;width:155px;height:155px;margin:0 auto 26px}
+.ring-wrap svg{transform:rotate(-90deg)}
+.rbg{fill:none;stroke:rgba(212,175,55,.12);stroke-width:10}
+.rfill{fill:none;stroke:var(--gold);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+.rctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.rpct{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold)}
+.rpct-sym{font-size:1.1rem;color:var(--gold-dim)}
+.srow{display:flex;gap:14px;margin-bottom:32px}
+.sb{flex:1;background:rgba(255,255,255,.04);border-radius:14px;border:1px solid rgba(255,255,255,.08);padding:18px 14px;text-align:center}
+.sb .sn{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700}
+.sb .sl{font-size:.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px}
+.sb.g .sn{color:var(--correct)}
+.sb.r .sn{color:var(--wrong)}
+.sb.o .sn{color:var(--gold)}
+.gbadge{display:inline-block;font-family:'Playfair Display',serif;font-size:.97rem;padding:8px 22px;border-radius:30px;margin-bottom:18px;font-weight:700;letter-spacing:1px}
+.gA{background:rgba(39,174,96,.2);border:1px solid rgba(39,174,96,.5);color:var(--correct)}
+.gB{background:rgba(212,175,55,.2);border:1px solid rgba(212,175,55,.5);color:var(--gold)}
+.gC{background:rgba(231,76,60,.2);border:1px solid rgba(231,76,60,.5);color:var(--wrong)}
+/* wrong items */
+.wsec{margin-top:8px}
+.wstitle{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--gold);margin-bottom:16px;padding-bottom:11px;border-bottom:1px solid rgba(212,175,55,.2)}
+.wi{background:rgba(231,76,60,.07);border:1px solid rgba(231,76,60,.2);border-radius:15px;padding:20px 22px;margin-bottom:18px;animation:fi .4s ease}
+.wiq{font-size:1rem;color:var(--white);margin-bottom:12px;line-height:1.6}
+.wiq strong{color:var(--gold-dim);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:4px}
+.wians{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.wia{padding:7px 14px;border-radius:8px;font-size:.9rem;border:1px solid transparent}
+.wia.uw{background:var(--wbg);border-color:rgba(231,76,60,.4);color:var(--wrong)}
+.wia.ca{background:var(--cbg);border-color:rgba(39,174,96,.4);color:var(--correct)}
+.wia-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;display:block;opacity:.7;margin-bottom:1px}
+/* explain sections */
+.exp-sec{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.exp-hdr{font-size:.67rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.exp-hdr::before,.exp-hdr::after{content:'';flex:1;height:1px}
+.exp-hdr.wh{color:rgba(231,76,60,.85)}
+.exp-hdr.wh::before,.exp-hdr.wh::after{background:rgba(231,76,60,.25)}
+.exp-hdr.ch{color:rgba(39,174,96,.9)}
+.exp-hdr.ch::before,.exp-hdr.ch::after{background:rgba(39,174,96,.25)}
+/* wrong reason box */
+.exp-wb{background:rgba(231,76,60,.07);border:1px solid rgba(231,76,60,.25);border-left:3px solid var(--wrong);border-radius:10px;padding:13px 17px;display:flex;flex-direction:column;gap:9px}
+.exp-wen{font-family:'Crimson Pro',serif;font-size:.96rem;color:rgba(255,200,200,.92);line-height:1.7;padding-bottom:9px;border-bottom:1px solid rgba(231,76,60,.15)}
+.exp-war{font-family:'Noto Naskh Arabic',serif;font-size:1.02rem;color:rgba(255,185,185,.88);line-height:1.9;text-align:right;direction:rtl}
+/* correct reason box */
+.exp-cb{background:rgba(39,174,96,.07);border:1px solid rgba(39,174,96,.25);border-left:3px solid var(--correct);border-radius:10px;padding:13px 17px;display:flex;flex-direction:column;gap:9px}
+.exp-cen{font-family:'Crimson Pro',serif;font-size:.96rem;color:rgba(200,255,220,.92);line-height:1.7;padding-bottom:9px;border-bottom:1px solid rgba(39,174,96,.15)}
+.exp-car{font-family:'Noto Naskh Arabic',serif;font-size:1.02rem;color:rgba(185,255,205,.88);line-height:1.9;text-align:right;direction:rtl}
+/* footer */
+.rftr{text-align:center;margin-top:32px}
+.btnr{background:transparent;border:2px solid var(--gold);color:var(--gold);border-radius:12px;padding:14px 38px;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all .28s;letter-spacing:.5px}
+.btnr:hover{background:var(--gold);color:var(--deep)}
+/* scrollbar */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:4px}
+@media(max-width:600px){
+  .card,.qcard,.rcard{padding:24px 16px}
+  .qtxt{font-size:1.05rem}
+  .srow{flex-wrap:wrap}
+  .sb{min-width:calc(50% - 7px)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="cvs"></canvas>
+<div class="nb nb1"></div>
+<div class="nb nb2"></div>
+<div class="nb nb3"></div>
+
+<!-- TELEGRAM -->
+<div id="tg-scr" class="scr hidden">
+  <div class="card">
+    <div class="badge">
+      <span class="uni">Al-Mustaqbal University &middot; Babylon</span>
+      <div class="gline"></div>
+      <span class="dept">Department of English Language</span>
+    </div>
+    <div class="tgico">📢</div>
+    <div class="tgtitle">Join Our Channel First</div>
+    <div class="tgsub">Please join the official Telegram channel of the English Language Department before accessing the quiz.</div>
+    <div class="tgcount" id="tgNum">5</div>
+    <div class="tglbl">Redirecting in seconds…</div>
+    <br>
+    <a href="https://t.me/vgsscwe" target="_blank" class="btntg">✈️ &nbsp;Join Telegram Channel</a>
+    <br>
+    <div style="font-size:.83rem;color:var(--gray);margin-top:11px;">You will be redirected to login automatically.</div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="lg-scr" class="scr hidden">
+  <div class="card">
+    <div class="badge">
+      <span class="uni">Al-Mustaqbal University &middot; Babylon &middot; 2025–2026</span>
+      <div class="gline"></div>
+      <span class="dept">Department of English Language — Grammar Quiz</span>
+    </div>
+    <div class="ltitle">Parts of Speech</div>
+    <div class="lsub">Form Classes &amp; Structure Classes<br>Enter your full four-part name to begin.</div>
+    <div class="iw">
+      <label>Full Name / الاسم الرباعي</label>
+      <input type="text" id="nameIn" placeholder="e.g. Ahmed Ali Hassan Mohammed" autocomplete="off">
+      <div class="nhint" id="nhint">0 / 4 parts entered</div>
+      <div class="nerr" id="nerr">⚠ Please enter your full four-part name.</div>
+    </div>
+    <button class="btnp" id="startBtn" disabled onclick="startQuiz()">Begin Quiz →</button>
+    <div class="pills">
+      <div class="pill"><div class="n">100</div><div class="l">Questions</div></div>
+      <div class="pill"><div class="n">115</div><div class="l">Bank</div></div>
+      <div class="pill"><div class="n">60</div><div class="l">Min Limit</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="qz-scr" class="scr hidden" style="align-items:flex-start;justify-content:center;">
+  <div class="qtop">
+    <div class="qctr">Question <span id="qn">1</span> of <span id="qt">100</span></div>
+    <div class="twrap"><span style="color:var(--gold)">⏱</span><span class="tdisp" id="tdisp">60:00</span></div>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  <div class="qcard">
+    <div class="ttag" id="ttag">Topic</div>
+    <div class="qtxt" id="qtxt">Loading…</div>
+    <div class="opts" id="opts"></div>
+    <div class="fbar">
+      <div class="fmsg" id="fmsg"></div>
+      <button class="btnn" id="btnn" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="rs-scr" class="scr hidden" style="align-items:flex-start;justify-content:center;">
+  <div class="rcard">
+    <div class="rhdr">
+      <div class="rtitle">📋 Quiz Results</div>
+      <div class="rsname" id="rsname"></div>
+      <div class="gbadge" id="gbadge"></div>
+      <div class="ring-wrap">
+        <svg width="155" height="155" viewBox="0 0 155 155">
+          <circle class="rbg" cx="77.5" cy="77.5" r="67.5"/>
+          <circle class="rfill" id="rfill" cx="77.5" cy="77.5" r="67.5"
+                  stroke-dasharray="424.12" stroke-dashoffset="424.12"/>
+        </svg>
+        <div class="rctr"><span class="rpct" id="rpct">0</span><span class="rpct-sym">%</span></div>
+      </div>
+      <div class="srow">
+        <div class="sb o"><div class="sn" id="stot">100</div><div class="sl">Total</div></div>
+        <div class="sb g"><div class="sn" id="scor">0</div><div class="sl">Correct ✓</div></div>
+        <div class="sb r"><div class="sn" id="swrg">0</div><div class="sl">Wrong ✗</div></div>
+      </div>
+    </div>
+    <div class="wsec" id="wsec"></div>
+    <div class="rftr"><button class="btnr" onclick="retryQuiz()">↺ &nbsp;Retry Quiz</button></div>
+  </div>
+</div>
+
+<script>
+// ── STARS ──────────────────────────────────────────────
+(function(){
+  var cv=document.getElementById('cvs'),ctx=cv.getContext('2d'),st=[];
+  function resize(){cv.width=innerWidth;cv.height=innerHeight;}
+  function init(){
+    st=[];
+    var n=Math.floor(cv.width*cv.height/6500);
+    for(var i=0;i<n;i++) st.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.7+0.2,sp:Math.random()*0.007+0.003,ph:Math.random()*Math.PI*2});
+  }
+  function draw(t){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for(var i=0;i<st.length;i++){
+      var s=st[i],a=0.15+0.85*Math.abs(Math.sin(s.ph+t*s.sp));
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(255,255,255,'+a.toFixed(3)+')';ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',function(){resize();init();});
+  resize();init();draw(0);
+})();
+
+// ── QUESTION BANK (126 questions) ──────────────────────
+var QB=[
+// FORM CLASSES
+{t:"Groups of words that have lexical meaning, accept lexical endings, and serve different grammatical functions are called:",o:["Structure classes","Form classes","Function words","Inflectional classes"],a:1,tp:"Form Classes",
+ wr:"You chose an option that does not match the definition of form classes. Structure classes carry little meaning and don't inflect; function words/inflectional classes are not standard terminology for this definition.",
+ cr:"Form classes are defined as groups of words that carry lexical (dictionary) meaning, accept inflectional or derivational endings, and can serve various grammatical roles — e.g. nouns, verbs, adjectives, adverbs.",
+ war:"اخترت ما لا ينطبق على تعريف أصناف الصيغة. أصناف البنية تحمل معنى ضئيل ولا تتصرف.",
+ car:"أصناف الصيغة هي مجموعات الكلمات التي تحمل معنى معجمياً وتقبل اللواحق الصرفية وتؤدي وظائف نحوية متنوعة — مثل الأسماء والأفعال والصفات والظروف."},
+
+{t:"How many major form classes does the English language have?",o:["Three","Four","Five","Six"],a:2,tp:"Form Classes",
+ wr:"The number is neither three, four, nor six. You may be confusing form classes with other grammatical categories.",
+ cr:"English has exactly FIVE major form classes: nouns, verbs, adjectives, adverbs, and prepositions.",
+ war:"العدد ليس ثلاثة ولا أربعة ولا ستة. ربما خلطت بين أصناف الصيغة وفئات نحوية أخرى.",
+ car:"اللغة الإنجليزية لديها خمسة أصناف رئيسية للصيغة بالضبط: الأسماء والأفعال والصفات والظروف وحروف الجر."},
+
+{t:"Which of the following is NOT a form class?",o:["Nouns","Verbs","Prepositions","Adjectives"],a:2,tp:"Form Classes",
+ wr:"Nouns, verbs, and adjectives are all form classes — they inflect and carry meaning. You may have confused prepositions with a form class.",
+ cr:"Prepositions belong to STRUCTURE (function) classes, not form classes. They do not inflect, carry little lexical meaning, and form a closed set of about fifty members.",
+ war:"الأسماء والأفعال والصفات أصناف صيغة — تتصرف وتحمل معنى. ربما خلطت بين حروف الجر وأصناف الصيغة.",
+ car:"حروف الجر تنتمي إلى أصناف البنية الوظيفية، لا أصناف الصيغة. لا تتصرف ولا تحمل معنى معجمياً كاملاً."},
+
+{t:"Form classes are words that change their form through:",o:["Derivation only","Inflection","Compounding","Blending"],a:1,tp:"Form Classes",
+ wr:"Derivation creates new words but is not the defining feature of form classes. Compounding and blending are word-formation processes, not what defines form class membership.",
+ cr:"Form classes are defined by INFLECTION — adding grammatical endings to signal tense, number, degree, etc. (play → plays → played → playing).",
+ war:"الاشتقاق يكوّن كلمات جديدة لكنه ليس السمة المُعرِّفة لأصناف الصيغة. التركيب والمزج عمليات تكوين كلمات.",
+ car:"أصناف الصيغة تُعرَّف بالإعراب الصرفي — إضافة لواحق نحوية للتعبير عن الزمن والعدد والدرجة (play → plays → played → playing)."},
+
+{t:"Form classes contrast with which type of classes?",o:["Major classes","Structure (Function) classes","Open classes","Lexical classes"],a:1,tp:"Form Classes",
+ wr:"Form classes are not contrasted with major, open, or lexical classes in this context. These terms don't capture the correct distinction.",
+ cr:"Form classes contrast with STRUCTURE (Function) classes — which include pronouns, determiners, prepositions, and auxiliaries. These do not inflect and form closed, stable sets.",
+ war:"أصناف الصيغة لا تتقابل مع الأصناف الكبرى أو المفتوحة أو المعجمية في هذا السياق.",
+ car:"أصناف الصيغة تتقابل مع أصناف البنية الوظيفية — وتشمل الضمائر وأدوات التعريف وحروف الجر والأفعال المساعدة. لا تتصرف وتُشكّل مجموعات مغلقة."},
+
+{t:"Which of the following includes only form classes?",o:["Verbs, nouns, adverbs, adjectives","Prepositions, determiners, auxiliaries","Pronouns, qualifiers, determiners","Prepositions, conjunctions, articles"],a:0,tp:"Form Classes",
+ wr:"Options B, C, and D contain structure class words (prepositions, determiners, auxiliaries, pronouns, qualifiers, conjunctions, articles) — none of which are form classes.",
+ cr:"Verbs, nouns, adverbs, and adjectives are all FORM classes — they inflect and accept lexical endings. All other options include structure class words.",
+ war:"الخيارات B وC وD تحتوي كلمات أصناف بنية (حروف جر، أدوات، مساعدات، ضمائر) — لا شيء منها صنف صيغة.",
+ car:"الأفعال والأسماء والظروف والصفات جميعها أصناف صيغة — تتصرف وتقبل اللواحق المعجمية."},
+
+// NOUNS
+{t:"Nouns are words that name people, places, things, or:",o:["Actions","Abstract ideas","Qualities only","Relations"],a:1,tp:"Nouns",
+ wr:"Actions are expressed by verbs, not nouns. Qualities alone and relations are too narrow — nouns cover a much broader range including abstract concepts.",
+ cr:"Nouns name people (teacher), places (Baghdad), things (book), or ABSTRACT IDEAS (freedom, justice, love). Verbs express actions.",
+ war:"الأفعال هي التي تعبّر عن الأحداث، ليس الأسماء. الصفات والعلاقات وحدها لا تكفي.",
+ car:"الأسماء تسمّي الأشخاص (معلم) والأماكن (بغداد) والأشياء (كتاب) والأفكار المجردة (الحرية والعدالة). الأفعال هي التي تعبّر عن الأحداث."},
+
+{t:"A word that accepts plural (−s/−es) and possessive ('s) is called a:",o:["Verb","Adjective","Noun","Adverb"],a:2,tp:"Nouns",
+ wr:"Verbs take -ed/-ing/-s (3rd person), adjectives take -er/-est, adverbs usually take -ly — none accept both plural -s and possessive 's.",
+ cr:"NOUNS are identified by accepting plural endings (books, classes) and possessive markers (student's, teacher's). No other form class has both these features.",
+ war:"الأفعال تأخذ -ed/-ing، والصفات -er/-est، والظروف -ly — لا شيء منها يقبل الجمع والملكية معاً.",
+ car:"الأسماء تُعرف بقبول لاحقة الجمع (books, classes) وعلامة الملكية (student's, teacher's). لا صنف آخر يملك كلتا الخاصيتين."},
+
+{t:"In 'The student is reading a book,' the word 'student' functions as a:",o:["Object","Complement","Subject","Modifier"],a:2,tp:"Nouns",
+ wr:"An object receives the action; a complement renames/describes the subject; a modifier describes another word. None of these fit 'student' here.",
+ cr:"'Student' is the SUBJECT — it is the doer of the action 'is reading'. Subjects come before the verb and perform or experience the action.",
+ war:"المفعول به يستقبل الفعل؛ المكمّل يصف الفاعل؛ المُعدِّل يصف كلمة أخرى. لا شيء من هذا ينطبق على 'student' هنا.",
+ car:"'student' هو الفاعل — القائم بفعل القراءة. الفاعل يأتي قبل الفعل ويؤدي الفعل."},
+
+{t:"In 'I like sport,' the word 'sport' functions as a(n):",o:["Subject","Object","Complement","Gerund"],a:1,tp:"Nouns",
+ wr:"'I' is the subject; 'sport' is not a gerund here (no -ing) and not a complement (no linking verb). Sport is what is liked — it receives the action.",
+ cr:"'Sport' is the DIRECT OBJECT of the verb 'like'. It receives the action and answers 'What do I like? → sport'.",
+ war:"'I' هو الفاعل؛ 'sport' ليس gerund (لا يوجد -ing) وليس مكمّلاً (لا يوجد فعل رابط). الرياضة هي ما يُحبّ.",
+ car:"'sport' هو المفعول به المباشر للفعل 'like'. يستقبل الفعل ويجيب على 'ماذا أحب؟ → الرياضة'."},
+
+{t:"In 'He is a doctor,' the word 'doctor' functions as a:",o:["Subject","Object","Complement","Modifier"],a:2,tp:"Nouns",
+ wr:"'He' is the subject. 'Doctor' does not receive action (object) and does not describe another word (modifier) — it renames the subject through a linking verb.",
+ cr:"'Doctor' is a SUBJECT COMPLEMENT — it follows the linking verb 'is' and renames the subject 'He'. Subject complements follow linking verbs (be, seem, become).",
+ war:"'He' هو الفاعل. 'doctor' لا يستقبل فعلاً (مفعول) ولا يصف كلمة أخرى (مُعدِّل) — بل يُعيد تسمية الفاعل.",
+ car:"'doctor' مكمّل الفاعل — يأتي بعد الفعل الرابط 'is' ويُعيد تسمية الفاعل 'He'. المكمّلات تتبع الأفعال الرابطة (be, seem, become)."},
+
+{t:"The noun 'acceptance' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:1,tp:"Nouns – Derivation",
+ wr:"'Acceptance' is not derived from a noun, adjective, or adverb. The root is a verb.",
+ cr:"'Acceptance' = accept (VERB) + -ance. The suffix -ance derives nouns from verbs: accept→acceptance, resist→resistance, appear→appearance.",
+ war:"'acceptance' لا تشتق من اسم أو صفة أو ظرف. الجذر فعل.",
+ car:"acceptance = accept (فعل) + -ance. اللاحقة -ance تشتق الأسماء من الأفعال: accept←acceptance، resist←resistance."},
+
+{t:"The noun 'decision' is derived from a:",o:["Noun","Adjective","Verb","Pronoun"],a:2,tp:"Nouns – Derivation",
+ wr:"'Decision' does not come from a noun, adjective, or pronoun. Trace it back: decide → decision.",
+ cr:"'Decision' = decide (VERB) + -ion (with spelling change). The suffix -ion/-tion derives nouns from verbs: decide→decision, create→creation, act→action.",
+ war:"'decision' لا تأتي من اسم أو صفة أو ضمير. تتبّعها: decide → decision.",
+ car:"decision = decide (فعل) + -ion مع تغيير إملائي. -ion/-tion تشتق الأسماء من الأفعال: decide←decision، create←creation."},
+
+{t:"The noun 'importance' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:1,tp:"Nouns – Derivation",
+ wr:"Although 'importance' relates to 'important' (adjective), the direct derivational base is the verb, not the adjective.",
+ cr:"'Importance' = import (VERB) + -ance. The -ance suffix converts the verb directly into a noun.",
+ war:"رغم ارتباط 'importance' بالصفة 'important'، الأساس الاشتقاقي المباشر هو الفعل.",
+ car:"importance = import (فعل) + -ance. اللاحقة -ance تحوّل الفعل مباشرةً إلى اسم."},
+
+{t:"The noun 'booklet' is derived from a:",o:["Verb","Noun","Adjective","Adverb"],a:1,tp:"Nouns – Derivation",
+ wr:"'Booklet' is not from a verb, adjective, or adverb. The base word 'book' is itself a noun.",
+ cr:"'Booklet' = book (NOUN) + -let (diminutive suffix). The -let suffix forms a noun meaning a smaller version: book→booklet, drop→droplet, pig→piglet.",
+ war:"'booklet' ليست من فعل أو صفة أو ظرف. كلمة الأساس 'book' هي نفسها اسم.",
+ car:"booklet = book (اسم) + -let (لاحقة تصغير). -let تكوّن اسماً يدل على نسخة أصغر: book←booklet، drop←droplet."},
+
+{t:"The noun 'friendship' is derived from a:",o:["Verb","Adjective","Noun","Pronoun"],a:2,tp:"Nouns – Derivation",
+ wr:"'Friendship' is not built from a verb, adjective, or pronoun. The base 'friend' is a noun.",
+ cr:"'Friendship' = friend (NOUN) + -ship. The -ship suffix creates abstract nouns expressing a relationship or condition: friend→friendship, leader→leadership.",
+ war:"'friendship' ليست مبنية من فعل أو صفة أو ضمير. الأساس 'friend' اسم.",
+ car:"friendship = friend (اسم) + -ship. -ship تكوّن أسماءً مجردة تعبّر عن علاقة أو حالة: friend←friendship."},
+
+{t:"The noun 'purity' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Nouns – Derivation",
+ wr:"'Purity' is not from a noun, verb, or adverb. The base word 'pure' is an adjective.",
+ cr:"'Purity' = pure (ADJECTIVE) + -ity. The suffix -ity derives abstract nouns from adjectives: pure→purity, equal→equality, active→activity.",
+ war:"'purity' ليست من اسم أو فعل أو ظرف. كلمة الأساس 'pure' صفة.",
+ car:"purity = pure (صفة) + -ity. -ity تشتق الأسماء المجردة من الصفات: pure←purity، equal←equality."},
+
+{t:"The noun 'wisdom' is derived from an:",o:["Noun","Verb","Adverb","Adjective"],a:3,tp:"Nouns – Derivation",
+ wr:"'Wisdom' is not from a noun, verb, or adverb. The base 'wise' is an adjective.",
+ cr:"'Wisdom' = wise (ADJECTIVE) + -dom (spelling change). The suffix -dom derives nouns from adjectives: wise→wisdom, free→freedom.",
+ war:"'wisdom' ليست من اسم أو فعل أو ظرف. الأساس 'wise' صفة.",
+ car:"wisdom = wise (صفة) + -dom مع تغيير إملائي. -dom تشتق الأسماء من الصفات: wise←wisdom، free←freedom."},
+
+// VERBS
+{t:"Verbs are words that express actions or:",o:["Qualities","Positions","States of being","Descriptions"],a:2,tp:"Verbs",
+ wr:"Qualities are expressed by adjectives; positions by prepositions; descriptions by adjectives/adverbs — none of these define verbs.",
+ cr:"Verbs express either ACTIONS (run, write, speak) or STATES OF BEING (be, seem, exist, feel). The state-of-being function is just as important as action.",
+ war:"الصفات تعبّر عن الصفات؛ حروف الجر عن المواضع؛ الوصف وظيفة الصفات والظروف — لا شيء من هذا يعرّف الأفعال.",
+ car:"الأفعال تعبّر عن الأحداث (run, write) أو حالات الوجود (be, seem, exist, feel). وظيفة حالة الوجود بنفس أهمية الحدث."},
+
+{t:"Verbs have a maximum of how many different inflectional forms?",o:["Three","Four","Six","Five"],a:3,tp:"Verbs",
+ wr:"Three, four, and six are all incorrect. English verbs have exactly five possible inflectional forms.",
+ cr:"English verbs have up to FIVE inflectional forms: (1) stem: arrive, (2) past -ed: arrived, (3) past participle -en/-ed: written/arrived, (4) present participle -ing: arriving, (5) 3rd person -s: arrives.",
+ war:"ثلاثة وأربعة وستة جميعها غير صحيح. للأفعال الإنجليزية خمس صور تصريفية بالضبط.",
+ car:"للأفعال الإنجليزية ما يصل إلى خمس صور: (1) الجذع: arrive، (2) الماضي: arrived، (3) المفعول المصدري: written/arrived، (4) اسم الفاعل: arriving، (5) الغائب: arrives."},
+
+{t:"The stem form of a verb is:",o:["The past form","The verb in its simple form","The −ing form","The third person form"],a:1,tp:"Verbs",
+ wr:"The past, -ing, and third person are inflected forms built from the stem — they are not the stem itself.",
+ cr:"The STEM (base form) is the verb in its simplest, uninflected form — as listed in a dictionary: arrive, play, write. All inflectional endings are added to this base.",
+ war:"الماضي و-ing والغائب كلها صور متصرفة مبنية من الجذع — وليست الجذع نفسه.",
+ car:"الصورة الجذعية هي الفعل في أبسط صوره غير المتصرفة — كما في القاموس: arrive, play, write. جميع اللواحق الصرفية تُضاف إلى هذا الأساس."},
+
+{t:"Which inflectional ending marks the past tense of regular verbs?",o:["-ing","-s","-ed (past)","-en"],a:2,tp:"Verbs",
+ wr:"-ing marks present participle; -s marks third person singular present; -en marks past participle of some irregular verbs. None of these mark regular past tense.",
+ cr:"Regular verbs form the PAST TENSE by adding -ed: play→played, walk→walked, arrive→arrived. This is the standard inflection for regular past tense.",
+ war:"-ing للمضارع المستمر؛ -s للغائب؛ -en للمفعول المصدري الشاذ. لا شيء من هذا يُعلّم الماضي المنتظم.",
+ car:"الأفعال المنتظمة تُكوّن الماضي بإضافة -ed: play←played، walk←walked، arrive←arrived."},
+
+{t:"Which inflectional ending marks the past participle?",o:["-s","-ing","-ed (past)","-en / -ed (past participle)"],a:3,tp:"Verbs",
+ wr:"The -s marks 3rd person present; -ing marks present participle; -ed alone marks regular past tense. The past participle uses -en OR -ed but in a different grammatical role.",
+ cr:"The PAST PARTICIPLE uses -en (irregular: written, spoken, gone) or -ed (regular: finished, played). Used with 'have' in perfect tenses and 'be' in passive voice.",
+ war:"-s للغائب؛ -ing للمضارع المستمر؛ -ed وحده للماضي المنتظم. المفعول المصدري يستخدم -en أو -ed لكن في دور نحوي مختلف.",
+ car:"المفعول المصدري يستخدم -en للشاذة (written, spoken) أو -ed للمنتظمة (finished). يُستخدم مع 'have' في التام ومع 'be' في المجهول."},
+
+{t:"In 'She has not written her homework,' 'written' is in the _____ form.",o:["Simple stem","Past tense","Past participle","Present participle"],a:2,tp:"Verbs",
+ wr:"The simple stem is 'write'; the past tense is 'wrote'; the present participle is 'writing'. The form used after 'has' is specifically the past participle.",
+ cr:"'Written' is the PAST PARTICIPLE of the irregular verb 'write' (write → wrote → written). It follows 'has', forming the present perfect tense.",
+ war:"الجذع البسيط هو 'write'؛ الماضي 'wrote'؛ المضارع المستمر 'writing'. الصورة المستخدمة بعد 'has' هي المفعول المصدري تحديداً.",
+ car:"'written' المفعول المصدري للفعل الشاذ 'write' (write → wrote → written). يتبع 'has' مُكوِّناً المضارع التام."},
+
+{t:"In 'I am reading a book,' 'reading' is in the _____ form.",o:["Simple stem","Past tense","Past participle","Present participle"],a:3,tp:"Verbs",
+ wr:"The stem is 'read'; the past tense of 'read' is also 'read'; the past participle is 'read'. The -ing form used with 'am' is the present participle.",
+ cr:"'Reading' is the PRESENT PARTICIPLE (stem + -ing). Used with 'am' (auxiliary be) it forms the present progressive, indicating an ongoing action.",
+ war:"الجذع 'read'؛ الماضي 'read'؛ المفعول المصدري 'read'. الصورة -ing المستخدمة مع 'am' هي اسم الفاعل الحاضر.",
+ car:"'reading' اسم الفاعل الحاضر (الجذع + -ing). مع المساعد 'am' يُكوِّن المضارع المستمر للدلالة على حدث جارٍ."},
+
+{t:"Which ending marks the third person singular present of verbs?",o:["-ed","-ing","-en","-s"],a:3,tp:"Verbs",
+ wr:"-ed marks past tense; -ing marks present participle; -en marks some past participles. None of these signal the third person singular present.",
+ cr:"The -s ending marks the THIRD PERSON SINGULAR PRESENT: He arrives, She speaks, It runs. This inflection is obligatory with he/she/it in simple present.",
+ war:"-ed للماضي؛ -ing للمضارع المستمر؛ -en لبعض المفاعيل المصدرية. لا شيء منها يُشير إلى الغائب المفرد الحاضر.",
+ car:"اللاحقة -s تُعلّم المضارع للمفرد الغائب: He arrives, She speaks, It runs. هذا التصريف إلزامي مع (he/she/it) في المضارع البسيط."},
+
+{t:"In 'He arrives early,' 'arrives' uses which inflectional ending?",o:["-ing","-ed","-s","-en"],a:2,tp:"Verbs",
+ wr:"-ing would give 'arriving'; -ed would give 'arrived'; -en is not used here. The form 'arrives' ends in -s.",
+ cr:"'Arrives' = arrive + -s. This is the third person singular present inflection, used because the subject 'He' is 3rd person singular.",
+ war:"-ing ستُعطي 'arriving'؛ -ed ستُعطي 'arrived'؛ -en لا تُستخدم هنا. الصورة 'arrives' تنتهي بـ -s.",
+ car:"arrives = arrive + -s. هذه لاحقة الغائب المفرد المضارع، تُستخدم لأن الفاعل 'He' مفرد غائب."},
+
+{t:"In 'Mary speaks English well,' 'speaks' functions as a:",o:["Auxiliary verb","Main verb","Modal verb","Linking verb only"],a:1,tp:"Verbs",
+ wr:"Auxiliaries support another verb (have, be, do); modals express ability/possibility (can, will); linking verbs connect subject to complement (be, seem). 'Speaks' is the primary action verb.",
+ cr:"'Speaks' is the MAIN (lexical) verb — it carries the full meaning and expresses the action. It is the principal verb in the clause.",
+ war:"الأفعال المساعدة تدعم فعلاً آخر (have, be)؛ الشرطيات تعبّر عن القدرة (can, will)؛ الرابطة تربط الفاعل بالمكمّل (be, seem). 'speaks' هو الفعل الرئيسي.",
+ car:"'speaks' الفعل الرئيسي المعجمي — يحمل المعنى الكامل ويعبّر عن الفعل. هو الفعل الأساسي في الجملة."},
+
+{t:"In 'We have been shopping,' 'have' functions as a(n):",o:["Main verb","Adjective","Auxiliary verb","Determiner"],a:2,tp:"Verbs",
+ wr:"'Have' is not the main verb here (shopping is), not an adjective, and not a determiner. Its role is to support the main verb.",
+ cr:"'Have' is an AUXILIARY (helping) verb used with 'been' and the main verb 'shopping' to form the present perfect progressive tense.",
+ war:"'have' ليس الفعل الرئيسي هنا ('shopping' هو الرئيسي)، وليس صفة، وليس أداة تحديد. دوره دعم الفعل الرئيسي.",
+ car:"'have' فعل مساعد يُستخدم مع 'been' والفعل الرئيسي 'shopping' لتكوين المضارع التام المستمر."},
+
+{t:"The verb 'go' has _____ inflected forms.",o:["Two","Three","Four","Five"],a:3,tp:"Verbs",
+ wr:"Go has more than two, three, or four forms. Consider all its forms: go, goes, went, gone, going.",
+ cr:"'Go' has FIVE forms: go (stem), goes (-s), went (past — irregular), gone (past participle), going (-ing). Irregular verbs often have unique forms.",
+ war:"go لها أكثر من اثنتين أو ثلاث أو أربع. فكّر في جميع صورها: go, goes, went, gone, going.",
+ car:"'go' لها خمس صور: go (جذع)، goes (-s)، went (ماضٍ شاذ)، gone (مفعول مصدري)، going (-ing)."},
+
+{t:"In 'The girl has written a letter,' which is the correct past participle of 'write'?",o:["Write","Writes","Wrote","Written"],a:3,tp:"Verbs",
+ wr:"'Write' is the stem; 'writes' is the 3rd person present; 'wrote' is the simple past. The form used after 'has' must be the past participle.",
+ cr:"'Written' is the PAST PARTICIPLE of the irregular verb 'write': write (stem) → wrote (past) → written (past participle). Used after 'has/have'.",
+ war:"'write' الجذع؛ 'writes' الغائب المضارع؛ 'wrote' الماضي البسيط. الصورة المستخدمة بعد 'has' يجب أن تكون المفعول المصدري.",
+ car:"'written' المفعول المصدري للفعل الشاذ 'write': write (جذع) → wrote (ماضٍ) → written (مفعول مصدري). يُستخدم بعد has/have."},
+
+{t:"In 'The mines had been swept away,' 'swept' occurs in the:",o:["Simple stem","Past tense","Past participle","Present participle"],a:2,tp:"Verbs",
+ wr:"The stem of 'sweep' is 'sweep'; the past tense is 'swept' but here it follows 'had been' which requires a past participle; the present participle would be 'sweeping'.",
+ cr:"'Swept' is the PAST PARTICIPLE of 'sweep'. Following 'had been', it is used in the past perfect passive — a classic past participle position.",
+ war:"جذع 'sweep' هو 'sweep'؛ الماضي هو 'swept' لكنه هنا يتبع 'had been' الذي يتطلب مفعولاً مصدرياً.",
+ car:"'swept' المفعول المصدري لـ 'sweep'. يأتي بعد 'had been' في الماضي التام للمجهول — موضع كلاسيكي للمفعول المصدري."},
+
+{t:"The verb 'beautify' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:0,tp:"Verbs – Derivation",
+ wr:"'Beautify' does not come from a verb, adjective, or adverb. The root word 'beauty' is a noun.",
+ cr:"'Beautify' = beauty (NOUN) + -ify. The -ify suffix converts nouns (and sometimes adjectives) into verbs: beauty→beautify, class→classify.",
+ war:"'beautify' لا تأتي من فعل أو صفة أو ظرف. جذر الكلمة 'beauty' اسم.",
+ car:"beautify = beauty (اسم) + -ify. -ify تحوّل الأسماء (وأحياناً الصفات) إلى أفعال: beauty←beautify، class←classify."},
+
+{t:"The verb 'lengthen' is derived from a:",o:["Adjective","Noun","Verb","Pronoun"],a:1,tp:"Verbs – Derivation",
+ wr:"'Lengthen' does not come from an adjective, another verb, or a pronoun. The base 'length' is a noun.",
+ cr:"'Lengthen' = length (NOUN) + -en. The -en suffix derives verbs from nouns or adjectives: length→lengthen, dark→darken, bright→brighten.",
+ war:"'lengthen' لا تأتي من صفة أو فعل آخر أو ضمير. الأساس 'length' اسم.",
+ car:"lengthen = length (اسم) + -en. -en تشتق الأفعال من الأسماء أو الصفات: length←lengthen، dark←darken."},
+
+{t:"The verb 'save' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Verbs – Derivation",
+ wr:"'Save' is not derived from a noun, another verb, or adverb. The spelling change (f→v) connects it to an adjective.",
+ cr:"'Save' comes from the ADJECTIVE 'safe' with a sound/spelling change (f→v). safe (adj) → save (verb). This is verb derivation from an adjective.",
+ war:"'save' ليست مشتقة من اسم أو فعل آخر أو ظرف. التغيير الإملائي (f←v) يربطها بصفة.",
+ car:"'save' تأتي من الصفة 'safe' مع تغيير صوتي/إملائي (f←v). safe (صفة) ← save (فعل). هذا اشتقاق الفعل من صفة."},
+
+{t:"In 'This paragraph will weaken your paper,' 'weaken' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Verbs – Derivation",
+ wr:"'Weaken' is not from a noun, another verb, or adverb. It is built by adding -en to an adjective.",
+ cr:"'Weaken' = weak (ADJECTIVE) + -en. The -en suffix commonly forms verbs from adjectives: weak→weaken, dark→darken, hard→harden.",
+ war:"'weaken' ليست من اسم أو فعل آخر أو ظرف. تُبنى بإضافة -en إلى صفة.",
+ car:"weaken = weak (صفة) + -en. -en تُكوِّن الأفعال من الصفات عادةً: weak←weaken، dark←darken، hard←harden."},
+
+{t:"The derived verb of the adjective 'safe' is:",o:["Savings","Save","Safety","Safely"],a:1,tp:"Verbs – Derivation",
+ wr:"'Savings' and 'safety' are nouns; 'safely' is an adverb. Only one option is the verb form derived from the adjective 'safe'.",
+ cr:"The verb derived from 'safe' is SAVE (with f→v change). savings=noun, safety=noun, safely=adverb — only 'save' is a verb.",
+ war:"'savings' و'safety' أسماء؛ 'safely' ظرف. فقط خيار واحد هو الفعل المشتق من الصفة 'safe'.",
+ car:"الفعل المشتق من 'safe' هو 'save' مع تغيير f←v. savings=اسم، safety=اسم، safely=ظرف — فقط 'save' فعل."},
+
+// ADJECTIVES
+{t:"An adjective is a word that modifies or describes a noun or:",o:["Verb","Adverb","Pronoun","Preposition"],a:2,tp:"Adjectives",
+ wr:"Adjectives do not modify verbs (adverbs do that), adverbs (other adverbs do), or prepositions. Adjectives modify nouns AND pronouns.",
+ cr:"Adjectives modify NOUNS and PRONOUNS. Example: 'She is intelligent' — 'intelligent' describes the pronoun 'she'. Adverbs modify verbs/adjectives/adverbs.",
+ war:"الصفات لا تعدّل الأفعال (الظروف تفعل ذلك)، ولا الظروف، ولا حروف الجر. الصفات تعدّل الأسماء والضمائر.",
+ car:"الصفات تعدّل الأسماء والضمائر. مثال: 'She is intelligent' — 'intelligent' تصف الضمير 'she'. الظروف تعدّل الأفعال والصفات."},
+
+{t:"A word inflected with −er and −est, capable of forming adverbs with −ly, is called a(n):",o:["Adverb","Adjective","Noun","Verb"],a:1,tp:"Adjectives",
+ wr:"Adverbs don't typically take -er/-est. Nouns take -s/-'s. Verbs take -ed/-ing. Only adjectives have all these features together.",
+ cr:"ADJECTIVES take comparative (-er: taller) and superlative (-est: tallest). They form adverbs with -ly (quick→quickly) and nouns with -ness (kind→kindness).",
+ war:"الظروف لا تأخذ -er/-est عادةً. الأسماء تأخذ -s/-'s. الأفعال تأخذ -ed/-ing. فقط الصفات لديها جميع هذه الخصائص.",
+ car:"الصفات تأخذ المقارنة (-er: taller) والتفضيل (-est: tallest). تكوّن ظروفاً بـ -ly (quick←quickly) وأسماء بـ -ness."},
+
+{t:"Which of the following is an example of an adjective used independently?",o:["She sings loudly.","That is a really good book.","I walk fast.","He must study."],a:1,tp:"Adjectives",
+ wr:"'Loudly' and 'fast' are adverbs; 'must' is a modal auxiliary. Only one option contains an adjective modifying a noun.",
+ cr:"In 'That is a really good book,' 'good' is an ADJECTIVE modifying the noun 'book'. 'Loudly' and 'fast' are adverbs; 'must' is a modal auxiliary.",
+ war:"'Loudly' و'fast' ظروف؛ 'must' فعل مساعد شرطي. فقط خيار واحد يحتوي صفة تعدّل اسماً.",
+ car:"في 'That is a really good book'، 'good' صفة تعدّل الاسم 'book'. 'Loudly' و'fast' ظروف؛ 'must' مساعد شرطي."},
+
+{t:"The adjective 'aged' is derived from a:",o:["Verb","Adjective","Noun","Adverb"],a:2,tp:"Adjectives – Derivation",
+ wr:"'Aged' is not from a verb, another adjective, or adverb. The base word 'age' is a noun.",
+ cr:"'Aged' = age (NOUN) + -d/-ed. The -ed suffix converts nouns into adjectives meaning 'having the quality of': age→aged, talent→talented.",
+ war:"'aged' ليست من فعل أو صفة أخرى أو ظرف. كلمة الأساس 'age' اسم.",
+ car:"aged = age (اسم) + -d/-ed. -ed تحوّل الأسماء إلى صفات تعني 'ذو هذه الصفة': age←aged، talent←talented."},
+
+{t:"The adjective 'cultural' is derived from a:",o:["Verb","Noun","Adverb","Adjective"],a:1,tp:"Adjectives – Derivation",
+ wr:"'Cultural' is not from a verb, adverb, or another adjective. The base 'culture' is a noun.",
+ cr:"'Cultural' = culture (NOUN) + -al. The -al suffix is a common suffix deriving adjectives from nouns: culture→cultural, nation→national, logic→logical.",
+ war:"'cultural' ليست من فعل أو ظرف أو صفة أخرى. الأساس 'culture' اسم.",
+ car:"cultural = culture (اسم) + -al. -al لاحقة شائعة لاشتقاق الصفات من الأسماء: culture←cultural، nation←national."},
+
+{t:"The adjective 'fortunate' is derived from a:",o:["Verb","Adjective","Noun","Adverb"],a:2,tp:"Adjectives – Derivation",
+ wr:"'Fortunate' is not from a verb, another adjective, or adverb. Trace back to the noun base.",
+ cr:"'Fortunate' = fortune (NOUN) + -ate. The -ate suffix derives adjectives from nouns: fortune→fortunate, passion→passionate.",
+ war:"'fortunate' ليست من فعل أو صفة أخرى أو ظرف. ارجع إلى الأساس الاسمي.",
+ car:"fortunate = fortune (اسم) + -ate. -ate تشتق الصفات من الأسماء: fortune←fortunate، passion←passionate."},
+
+{t:"The adjective 'scientific' is derived from a:",o:["Verb","Adverb","Adjective","Noun"],a:3,tp:"Adjectives – Derivation",
+ wr:"'Scientific' is not from a verb, adverb, or another adjective. The base 'science' is a noun.",
+ cr:"'Scientific' = science (NOUN) + -ific (with spelling modification). The -ic/-ific suffix forms adjectives from nouns: science→scientific, angel→angelic.",
+ war:"'scientific' ليست من فعل أو ظرف أو صفة أخرى. الأساس 'science' اسم.",
+ car:"scientific = science (اسم) + -ific مع تعديل إملائي. -ic/-ific تكوّن الصفات من الأسماء: science←scientific."},
+
+{t:"The adjective 'wooden' is derived from a:",o:["Adjective","Noun","Verb","Adverb"],a:1,tp:"Adjectives – Derivation",
+ wr:"'Wooden' is not from another adjective, a verb, or an adverb. The base 'wood' is a noun.",
+ cr:"'Wooden' = wood (NOUN) + -en. The -en suffix derives adjectives from nouns: wood→wooden (made of wood), gold→golden, silk→silken.",
+ war:"'wooden' ليست من صفة أخرى أو فعل أو ظرف. الأساس 'wood' اسم.",
+ car:"wooden = wood (اسم) + -en. -en تشتق الصفات من الأسماء: wood←wooden (مصنوع من الخشب)، gold←golden."},
+
+{t:"The adjective 'collective' is derived from a:",o:["Verb","Adjective","Noun","Adverb"],a:0,tp:"Adjectives – Derivation",
+ wr:"'Collective' is not from another adjective, noun, or adverb. The base 'collect' is a verb.",
+ cr:"'Collective' = collect (VERB) + -ive. The -ive suffix derives adjectives from verbs: collect→collective, act→active, create→creative.",
+ war:"'collective' ليست من صفة أخرى أو اسم أو ظرف. الأساس 'collect' فعل.",
+ car:"collective = collect (فعل) + -ive. -ive تشتق الصفات من الأفعال: collect←collective، act←active."},
+
+{t:"The adjective 'continual' is derived from a:",o:["Noun","Verb","Adjective","Adverb"],a:1,tp:"Adjectives – Derivation",
+ wr:"'Continual' is not from a noun, another adjective, or adverb. The base 'continue' is a verb.",
+ cr:"'Continual' = continue (VERB) + -al (with spelling modification). Here the -al suffix derives an adjective from a verb.",
+ war:"'continual' ليست من اسم أو صفة أخرى أو ظرف. الأساس 'continue' فعل.",
+ car:"continual = continue (فعل) + -al مع تعديل إملائي. هنا -al تشتق الصفة من الفعل."},
+
+{t:"The adjective 'deadly' is derived from an:",o:["Noun","Verb","Adjective","Adverb"],a:2,tp:"Adjectives – Derivation",
+ wr:"'Deadly' is not from a noun, verb, or adverb. The base 'dead' is itself an adjective.",
+ cr:"'Deadly' = dead (ADJECTIVE) + -ly. Here -ly forms an adjective from another adjective (unusual — -ly normally forms adverbs, but not always).",
+ war:"'deadly' ليست من اسم أو فعل أو ظرف. الأساس 'dead' صفة.",
+ car:"deadly = dead (صفة) + -ly. هنا -ly تكوّن صفة من صفة أخرى (غير معتاد — -ly عادةً تكوّن ظروفاً)."},
+
+// ADVERBS
+{t:"An adverb is a word that modifies verbs, adjectives, or other:",o:["Nouns","Adverbs","Pronouns","Prepositions"],a:1,tp:"Adverbs",
+ wr:"Adverbs do not typically modify nouns (adjectives do), pronouns, or prepositions. The three targets of adverb modification are verbs, adjectives, and other adverbs.",
+ cr:"Adverbs modify: (1) VERBS — 'She sang loudly'; (2) ADJECTIVES — 'extremely cold'; (3) OTHER ADVERBS — 'very quickly'. They do not modify nouns.",
+ war:"الظروف لا تعدّل الأسماء عادةً (الصفات تفعل ذلك)، ولا الضمائر، ولا حروف الجر. الثلاثة المستهدفة للتعديل هي الأفعال والصفات والظروف الأخرى.",
+ car:"الظروف تعدّل: (1) الأفعال — 'She sang loudly'؛ (2) الصفات — 'extremely cold'؛ (3) ظروف أخرى — 'very quickly'. لا تعدّل الأسماء."},
+
+{t:"The most commonly used suffix for forming English adverbs is:",o:["-ness","-ward","-ly","-ful"],a:2,tp:"Adverbs",
+ wr:"-ness derives nouns from adjectives; -ward forms directional adverbs (cityward) but is far less common; -ful forms adjectives. One suffix dominates adverb formation.",
+ cr:"The suffix -LY is by far the most common adverb-forming suffix: quickly, softly, carefully, fortunately, happily. It is added to adjectives to form manner adverbs.",
+ war:"-ness تشتق الأسماء من الصفات؛ -ward تكوّن ظروف الاتجاه لكنها أقل شيوعاً؛ -ful تكوّن الصفات. لاحقة واحدة تهيمن على تكوين الظروف.",
+ car:"-ly هي الأشيع في تكوين الظروف: quickly, softly, carefully, fortunately. تُضاف إلى الصفات لتكوين ظروف الأسلوب."},
+
+{t:"The adverb 'fortunately' is derived from an:",o:["Noun","Verb","Adverb","Adjective"],a:3,tp:"Adverbs",
+ wr:"'Fortunately' is not from a noun, verb, or another adverb. Identify the base: fortunate.",
+ cr:"'Fortunately' = fortunate (ADJECTIVE) + -ly. The standard pattern is adjective + -ly → adverb: fortunate→fortunately, quick→quickly.",
+ war:"'fortunately' ليست من اسم أو فعل أو ظرف آخر. عرّف الأساس: fortunate.",
+ car:"fortunately = fortunate (صفة) + -ly. النمط المعياري هو صفة + -ly ← ظرف: fortunate←fortunately، quick←quickly."},
+
+{t:"In 'He looked cityward for a sign of the train,' 'cityward' has a(n) _____ position.",o:["Adjectival","Nominal","Adverbial","Verbal"],a:2,tp:"Adverbs",
+ wr:"'Cityward' does not modify a noun (adjectival), is not itself a noun (nominal), and does not function as a verb. It tells us the direction of looking.",
+ cr:"'Cityward' is a directional adverb (city + -ward) that modifies the verb 'looked', telling us WHERE/IN WHAT DIRECTION. It occupies an ADVERBIAL position.",
+ war:"'cityward' لا تعدّل اسماً (adjectival)، وليست اسماً (nominal)، ولا تعمل فعلاً. تخبرنا اتجاه النظر.",
+ car:"'cityward' ظرف اتجاه (city + -ward) يعدّل الفعل 'looked' مُخبراً إيانا أين/في أي اتجاه نظر. يشغل موضعاً ظرفياً."},
+
+{t:"In 'Mondays she sleeps late,' the word 'Mondays' is:",o:["A verb","Adjectival","Adverbial","A preposition"],a:2,tp:"Adverbs",
+ wr:"'Mondays' is clearly not a verb or preposition. It doesn't modify a noun (adjectival). It tells us WHEN she sleeps late.",
+ cr:"'Mondays' functions as an ADVERB OF TIME, indicating when she sleeps late. Nouns can occupy adverbial positions (time/frequency) without losing their noun identity.",
+ war:"'Mondays' ليست فعلاً أو حرف جر. لا تعدّل اسماً (adjectival). تخبرنا متى تنام متأخرة.",
+ car:"'Mondays' تعمل ظرفاً للزمن، تُشير إلى متى تنام متأخرة. الأسماء يمكنها شغل مواضع ظرفية (زمان/تكرار)."},
+
+{t:"In 'She sang loudly,' the adverb 'loudly' modifies:",o:["She","The subject","The verb sang","The sentence"],a:2,tp:"Adverbs",
+ wr:"'Loudly' does not modify the pronoun 'she' (that would require an adjective). It doesn't modify the whole sentence — it tells us specifically HOW she sang.",
+ cr:"'Loudly' is an ADVERB OF MANNER modifying the VERB 'sang'. It answers the question 'HOW did she sing?' — the classic function of a manner adverb.",
+ war:"'loudly' لا تعدّل الضمير 'she' (ذلك يتطلب صفة). لا تعدّل الجملة كلها — بل تخبرنا كيف غنّت تحديداً.",
+ car:"'loudly' ظرف أسلوب يعدّل الفعل 'sang'. يجيب على 'كيف غنّت؟' — الوظيفة الكلاسيكية لظرف الأسلوب."},
+
+{t:"In 'The room is extremely cold,' 'extremely' modifies:",o:["A verb","An adjective","Another adverb","A noun"],a:1,tp:"Adverbs",
+ wr:"'Extremely' does not modify a verb, another adverb, or a noun here. It intensifies the quality expressed by the following word.",
+ cr:"'Extremely' is an intensifier adverb modifying the ADJECTIVE 'cold'. It answers 'How cold?' Adverbs that modify adjectives indicate the degree of the quality.",
+ war:"'extremely' لا تعدّل فعلاً أو ظرفاً آخر أو اسماً هنا. تُكثّف الصفة التي تليها.",
+ car:"'extremely' ظرف تكثيف يعدّل الصفة 'cold'. يجيب على 'كم من البرودة؟'. الظروف التي تعدّل الصفات تشير إلى درجة الصفة."},
+
+{t:"In 'He runs very quickly,' 'very' modifies:",o:["The verb runs","He","Another adverb (quickly)","The sentence"],a:2,tp:"Adverbs",
+ wr:"'Very' does not modify the verb 'runs' (quickly does that), the pronoun 'he', or the whole sentence. It modifies the word immediately following it.",
+ cr:"'Very' is an intensifier modifying the ADVERB 'quickly'. This is an adverb modifying another adverb — 'very' increases the intensity of the manner expressed by 'quickly'.",
+ war:"'very' لا تعدّل الفعل 'runs' ('quickly' تفعل ذلك)، ولا الضمير 'he'، ولا الجملة كلها. تعدّل الكلمة التي تليها مباشرة.",
+ car:"'very' مُكثّف يعدّل الظرف 'quickly'. هذا ظرف يعدّل ظرفاً آخر — يزيد من شدة الأسلوب الذي يعبّر عنه 'quickly'."},
+
+{t:"Adverbs specify how, when, where, or to what _____ something occurs.",o:["Speed","Extent","Purpose","Direction only"],a:1,tp:"Adverbs",
+ wr:"Speed is too narrow; purpose is expressed differently; direction is only one type of adverb. The missing word covers degree/intensity functions.",
+ cr:"Adverbs answer HOW (manner), WHEN (time), WHERE (place), and to what EXTENT (degree/intensity). 'Extent' is the correct term for the degree function.",
+ war:"السرعة ضيقة جداً؛ الغرض يُعبَّر عنه بشكل مختلف؛ الاتجاه نوع واحد فقط. الكلمة الناقصة تغطي وظائف الدرجة/الشدة.",
+ car:"الظروف تجيب على كيف (أسلوب) ومتى (زمان) وأين (مكان) وإلى أي مدى (درجة/شدة). 'Extent' هو المصطلح الصحيح."},
+
+// UNINFLECTED
+{t:"Uninflected words are those that:",o:["Can be pluralized","Take no inflectional endings","Accept possessive 's","Change form regularly"],a:1,tp:"Uninflected Words",
+ wr:"Pluralizing and accepting possessive 's are features of nouns; changing form regularly describes inflected words. The defining feature of uninflected words is the opposite.",
+ cr:"Uninflected words TAKE NO inflectional endings — they do not change for plural, past tense, comparative, or any grammatical category. Examples: must, often, advice, only.",
+ war:"الجمع وقبول الملكية خاصيتان للأسماء؛ التغيير المنتظم يصف الكلمات المتصرفة. السمة المُعرِّفة للكلمات غير المتصرفة هي العكس.",
+ car:"الكلمات غير المتصرفة لا تقبل اللواحق الصرفية — لا تتغير للجمع أو الماضي أو المقارنة. أمثلة: must, often, advice, only."},
+
+{t:"Which set contains only uninflected words?",o:["Books, running, taller","Advice, often, only, must","Teachers, spoke, happier","Plays, written, fastest"],a:1,tp:"Uninflected Words",
+ wr:"Option A has plural/participle/comparative; C has plural/past/comparative; D has plural/past participle/superlative — all inflected forms. Only one set has no inflected forms.",
+ cr:"'Advice' (no plural), 'often' (adverb), 'only' (adverb), 'must' (modal — no past form) are ALL uninflected. The other sets contain inflected forms.",
+ war:"A تحتوي جمع/اسم فاعل/مقارنة؛ C جمع/ماضٍ/مقارنة؛ D جمع/مفعول مصدري/تفضيل — كلها صور متصرفة.",
+ car:"'advice' (بلا جمع)، 'often' (ظرف)، 'only' (ظرف)، 'must' (مساعد بلا ماضٍ) جميعها غير متصرفة."},
+
+{t:"Which of the following is an uninflected word?",o:["Runs","Taller","Must","Written"],a:2,tp:"Uninflected Words",
+ wr:"'Runs' = verb + -s (inflected); 'taller' = adjective + -er comparative (inflected); 'written' = past participle (inflected). Only one option shows no inflection.",
+ cr:"'Must' is a modal auxiliary with NO inflectional forms — no past (*musted), no -s (*musts), no -ing (*musting). It is permanently uninflected.",
+ war:"'runs' = فعل + -s (متصرف)؛ 'taller' = صفة + -er مقارنة (متصرف)؛ 'written' = مفعول مصدري (متصرف). فقط خيار واحد لا يُظهر تصريفاً.",
+ car:"'must' مساعد شرطي بلا صور تصريفية — لا ماضٍ ولا -s ولا -ing. غير متصرف دائماً."},
+
+// STRUCTURE CLASSES
+{t:"Members of a structure class are recognized mainly by:",o:["Their inflectional forms","Position","Their suffixes","Their lexical meaning"],a:1,tp:"Structure Classes",
+ wr:"Structure class words rarely inflect, don't have identifying suffixes, and carry little lexical meaning. Their identity comes from something else.",
+ cr:"Structure class words are recognized by their POSITION in a sentence. They have little lexical meaning, rarely change form, and signal grammatical relationships.",
+ war:"كلمات أصناف البنية نادراً ما تتصرف، وليست لها لواحق مميزة، وتحمل معنى معجمي ضئيل. هويتها تأتي من شيء آخر.",
+ car:"كلمات أصناف البنية تُعرف بموضعها في الجملة. معناها المعجمي ضئيل، ونادراً ما تتغير، وتُشير إلى العلاقات النحوية."},
+
+{t:"The largest structure class is:",o:["Pronouns","Determiners","Auxiliaries","Prepositions"],a:3,tp:"Structure Classes",
+ wr:"Pronouns, determiners, and auxiliaries all have fewer than fifty members. One structure class is larger than all others.",
+ cr:"PREPOSITIONS form the largest structure class with about fifty members: of, in, at, by, on, under, between, through, over, against, etc.",
+ war:"الضمائر وأدوات التحديد والأفعال المساعدة جميعها أقل من خمسين عضواً. صنف بنية واحد أكبر من جميع الأصناف.",
+ car:"حروف الجر تُشكّل أكبر أصناف البنية بنحو خمسين عضواً: of, in, at, by, on, under, between, through, over, against."},
+
+{t:"How many members does the largest structure class (prepositions) have?",o:["About twenty","About thirty","About fifty","About one hundred"],a:2,tp:"Structure Classes",
+ wr:"Twenty and thirty are too few; one hundred is too many. The number is approximately fifty — large for a structure class but tiny compared to form classes.",
+ cr:"The preposition class has approximately FIFTY members. This makes it the largest structure class, yet still small compared to the open form classes.",
+ war:"عشرون وثلاثون قليلة جداً؛ مئة كثيرة جداً. العدد نحو خمسين — كبير لصنف بنية لكن صغير مقارنةً بأصناف الصيغة.",
+ car:"صنف حروف الجر يضم نحو خمسين عضواً. هذا يجعله أكبر أصناف البنية، ومع ذلك صغير مقارنةً بأصناف الصيغة المفتوحة."},
+
+{t:"A structure class rarely admits new membership; it is therefore considered a _____ class.",o:["Open","Major","Closed","Lexical"],a:2,tp:"Structure Classes",
+ wr:"Open classes expand regularly with new words; 'major' and 'lexical' are not the relevant distinction here. Structure classes have stable, fixed membership.",
+ cr:"Structure classes are CLOSED classes — their membership is fixed and stable; new words rarely enter them. Form classes (nouns, verbs) are OPEN — they gain new members regularly.",
+ war:"الأصناف المفتوحة تتوسع بكلمات جديدة؛ 'major' و'lexical' ليسا التمييز المناسب. أصناف البنية لها عضوية ثابتة.",
+ car:"أصناف البنية مغلقة — عضويتها ثابتة؛ كلمات جديدة نادراً ما تنضم إليها. أصناف الصيغة مفتوحة — تكتسب أعضاء جدداً باستمرار."},
+
+{t:"Which of the following sets contains only structure class words?",o:["Dog, run, happy","The, she, with","Write, teacher, quickly","Tall, quickly, learn"],a:1,tp:"Structure Classes",
+ wr:"A contains noun/verb/adjective (form classes); C contains verb/noun/adverb (form classes); D contains adjective/adverb/verb (form classes). Only one set is all structure words.",
+ cr:"'The' (determiner), 'she' (pronoun), 'with' (preposition) are all STRUCTURE class words — they don't inflect and belong to closed sets.",
+ war:"A تحتوي اسم/فعل/صفة (أصناف صيغة)؛ C فعل/اسم/ظرف؛ D صفة/ظرف/فعل. فقط مجموعة واحدة كلها كلمات بنية.",
+ car:"'the' (أداة تعريف)، 'she' (ضمير)، 'with' (حرف جر) جميعها كلمات أصناف بنية — لا تتصرف وتنتمي لمجموعات مغلقة."},
+
+{t:"Which of the following belongs to structure classes?",o:["Nouns","Verbs","Determiners","Adjectives"],a:2,tp:"Structure Classes",
+ wr:"Nouns, verbs, and adjectives are all form classes — they inflect, carry meaning, and belong to open categories. Only one option is a structure class.",
+ cr:"DETERMINERS (the, a, this, those, my, every) belong to structure classes — a small, closed group that precedes nouns. Nouns/verbs/adjectives are form classes.",
+ war:"الأسماء والأفعال والصفات جميعها أصناف صيغة — تتصرف وتحمل معنى وتنتمي لأصناف مفتوحة. فقط خيار واحد هو صنف بنية.",
+ car:"أدوات التحديد (the, a, this, those, my) تنتمي لأصناف البنية — مجموعة صغيرة مغلقة تسبق الأسماء."},
+
+{t:"Structure classes are generally considered:",o:["Open classes","Closed classes","Lexical classes","Major classes"],a:1,tp:"Structure Classes",
+ wr:"Structure classes are not open (they don't expand), not lexical (they have little lexical meaning), and 'major' doesn't describe their closedness.",
+ cr:"Structure classes are CLOSED classes — new words rarely join them. Form classes (nouns, verbs, adjectives, adverbs) are OPEN classes that grow regularly.",
+ war:"أصناف البنية ليست مفتوحة (لا تتوسع)، وليست معجمية (معناها المعجمي ضئيل)، و'major' لا يصف إغلاقها.",
+ car:"أصناف البنية مغلقة — كلمات جديدة نادراً ما تنضم. أصناف الصيغة مفتوحة تنمو باستمرار."},
+
+// QUALIFIERS
+{t:"A qualifier occurs in the position just _____ an adjectival or an adverbial.",o:["After","Before","Within","At the end of"],a:1,tp:"Qualifiers",
+ wr:"Qualifiers cannot come after, within, or at the end of the word they modify. Their position is fixed and defines their function.",
+ cr:"Qualifiers (very, rather, quite, extremely) always appear immediately BEFORE an adjective or adverb: very cold, rather interesting, quite quickly.",
+ war:"المُكيّفات لا تأتي بعد أو داخل أو في نهاية الكلمة التي تعدّلها. موضعها ثابت ويُعرِّف وظيفتها.",
+ car:"المُكيّفات (very, rather, quite, extremely) تأتي دائماً مباشرةً قبل الصفة أو الظرف: very cold, rather interesting."},
+
+{t:"In 'The party was rather interesting,' 'rather' is a:",o:["Determiner","Auxiliary","Qualifier","Preposition"],a:2,tp:"Qualifiers",
+ wr:"Determiners precede nouns; auxiliaries support verbs; prepositions link nouns to the rest of the sentence. 'Rather' does none of these — it intensifies an adjective.",
+ cr:"'Rather' is a QUALIFIER (intensifier) that modifies the adjective 'interesting'. It occupies the pre-adjectival position — the defining position of qualifiers.",
+ war:"أدوات التحديد تسبق الأسماء؛ المساعدات تدعم الأفعال؛ حروف الجر تربط الأسماء. 'rather' لا تفعل أياً من هذا — تُكثّف صفة.",
+ car:"'rather' مُكيّف (مُكثّف) يعدّل الصفة 'interesting'. يشغل الموضع قبل الصفة — الموضع المُعرِّف للمُكيّفات."},
+
+{t:"In 'The table was only inches wide,' the function of 'inches' is a _____ by position.",o:["Determiner","Preposition","Pronoun","Qualifier"],a:3,tp:"Qualifiers",
+ wr:"'Inches' here is not functioning as a determiner, preposition, or pronoun. Its position — immediately before the adjective 'wide' — defines its function.",
+ cr:"'Inches' occupies the position immediately BEFORE the adjective 'wide', so it functions as a QUALIFIER by position. Position determines grammatical function here.",
+ war:"'inches' هنا لا تعمل أداة تحديد أو حرف جر أو ضميراً. موضعها — مباشرةً قبل الصفة 'wide' — يُحدد وظيفتها.",
+ car:"'inches' تشغل الموضع مباشرةً قبل الصفة 'wide'، فتعمل مُكيّفاً بحسب الموضع. الموضع يُحدد الوظيفة النحوية هنا."},
+
+{t:"In 'Are you completely happy with your courses?' the form class of 'completely' is:",o:["Qualifier","Adjective","Adverb","Determiner"],a:2,tp:"Qualifiers",
+ wr:"'Qualifier' is a positional/functional label, not a form class. 'Completely' is not an adjective (no -er/-est) or determiner. Its FORM CLASS is based on its ending.",
+ cr:"'Completely' is an ADVERB in form class (complete + -ly). Though it functions as a qualifier in position, its form class is adverb. Position ≠ form class.",
+ war:"'Qualifier' تصنيف موضعي/وظيفي وليس صنف صيغة. 'completely' ليست صفة (لا -er/-est) ولا أداة تحديد. صنف صيغتها مبني على لاحقتها.",
+ car:"'completely' ظرف في صنف صيغته (complete + -ly). رغم أنه يعمل مُكيّفاً في الموضع، فإن صنف صيغته ظرف. الموضع ≠ صنف الصيغة."},
+
+{t:"Which word is a qualifier?",o:["Very","She","At","My"],a:0,tp:"Qualifiers",
+ wr:"'She' is a personal pronoun; 'at' is a preposition; 'my' is a possessive determiner. None of these intensify adjectives or adverbs.",
+ cr:"'Very' is a QUALIFIER/INTENSIFIER — it modifies adjectives and adverbs to indicate degree: very cold, very quickly, very tall.",
+ war:"'she' ضمير شخصي؛ 'at' حرف جر؛ 'my' أداة ملكية. لا شيء منها يُكثّف الصفات أو الظروف.",
+ car:"'very' مُكيّف/مُكثّف — يعدّل الصفات والظروف للدلالة على الدرجة: very cold, very quickly, very tall."},
+
+{t:"In 'He spoke very clearly,' 'very' modifies:",o:["Spoke","Clearly","He","The whole sentence"],a:1,tp:"Qualifiers",
+ wr:"'Very' does not modify the verb 'spoke' (clearly does that), the pronoun 'he', or the whole sentence. It modifies the word directly following it.",
+ cr:"'Very' is a QUALIFIER modifying the ADVERB 'clearly'. It intensifies the manner of speaking. Qualifiers appear before both adjectives AND adverbs.",
+ war:"'very' لا تعدّل الفعل 'spoke' ('clearly' تفعل ذلك)، ولا 'he'، ولا الجملة كلها. تعدّل الكلمة التي تليها مباشرة.",
+ car:"'very' مُكيّف يعدّل الظرف 'clearly'. يُكثّف أسلوب الكلام. المُكيّفات تأتي قبل الصفات والظروف معاً."},
+
+// PREPOSITIONS
+{t:"Prepositions are words usually followed by a noun, noun phrase, or:",o:["Adjective","Adverb","Personal pronoun","Auxiliary"],a:2,tp:"Prepositions",
+ wr:"Prepositions are not followed by adjectives, adverbs, or auxiliaries as their objects. Their objects are nominal elements.",
+ cr:"Prepositions are followed by nouns, noun phrases, or PERSONAL PRONOUNS (object form): 'for him', 'with them', 'beside her'. The noun/pronoun is the prepositional object.",
+ war:"حروف الجر لا يتبعها صفات أو ظروف أو مساعدات كمجرور. مجرورها عناصر اسمية.",
+ car:"حروف الجر يتبعها الأسماء أو العبارات الاسمية أو الضمائر الشخصية (صيغة المفعول): 'for him', 'with them'. الاسم/الضمير هو مجرور حرف الجر."},
+
+{t:"In 'The car stopped at the station,' 'at' is a:",o:["Qualifier","Determiner","Preposition","Auxiliary"],a:2,tp:"Prepositions",
+ wr:"'At' does not intensify anything (qualifier), precede a noun as a signal (determiner), or help another verb (auxiliary). It links the noun 'station' to the rest.",
+ cr:"'At' is a PREPOSITION of place, followed by 'the station' (its object). The group 'at the station' is a prepositional phrase indicating location.",
+ war:"'at' لا تُكثّف شيئاً (qualifier)، ولا تسبق اسماً كإشارة (determiner)، ولا تدعم فعلاً آخر (auxiliary). تربط الاسم 'station' بالباقي.",
+ car:"'at' حرف جر يدل على المكان، يتبعه 'the station' (مجروره). 'at the station' شبه جملة حرف جر تُشير إلى الموضع."},
+
+{t:"The word 'except' is considered a ___-syllable preposition.",o:["One","Two","Three","Four"],a:1,tp:"Prepositions",
+ wr:"'Except' is not one syllable (like in, at, on, by) nor three or four syllables. Count carefully: ex-cept.",
+ cr:"'Except' has TWO syllables: ex-cept. It is classified as a two-syllable preposition, unlike one-syllable (in, at, on) or multi-syllable (between, according to) prepositions.",
+ war:"'except' ليست مقطعاً واحداً (مثل in, at, on) ولا ثلاثة أو أربعة مقاطع. عدّ بعناية: ex-cept.",
+ car:"'except' لها مقطعان: ex-cept. تُصنّف كحرف جر ثنائي المقطع، على خلاف أحادية المقطع (in, at) أو متعددة المقاطع (between)."},
+
+{t:"In 'Considering your loss, the bill will not be sent,' 'considering' is an:",o:["-ed preposition","-ing preposition","-en preposition","-s preposition"],a:1,tp:"Prepositions",
+ wr:"'Considering' ends in -ing, not -ed, -en, or -s. It is a present participle that has been grammaticalized into a preposition.",
+ cr:"'Considering' is an -ING PREPOSITION — a present participle functioning as a preposition. Other -ing prepositions: regarding, following, including, concerning.",
+ war:"'considering' تنتهي بـ -ing وليس -ed أو -en أو -s. اسم فاعل حاضر تحوّل نحوياً إلى حرف جر.",
+ car:"'considering' حرف جر بصيغة -ing — اسم فاعل حاضر يعمل حرف جر. أمثلة أخرى: regarding, following, including, concerning."},
+
+{t:"Which of the following is a preposition?",o:["With","Very","My","They"],a:0,tp:"Prepositions",
+ wr:"'Very' is a qualifier; 'my' is a possessive determiner; 'they' is a personal pronoun. Only one option is a preposition.",
+ cr:"'With' is a PREPOSITION indicating accompaniment or manner: 'with friends', 'done with care'. It requires a noun/pronoun object.",
+ war:"'very' مُكيّف؛ 'my' أداة ملكية؛ 'they' ضمير شخصي. فقط خيار واحد هو حرف جر.",
+ car:"'with' حرف جر يدل على الصحبة أو الأسلوب: 'with friends', 'done with care'. يتطلب اسماً أو ضميراً كمجرور."},
+
+{t:"Prepositions are typically followed by:",o:["Verbs","Nouns or pronouns","Adverbs","Determiners"],a:1,tp:"Prepositions",
+ wr:"Prepositions are not followed by verbs (infinitives are different), adverbs, or determiners alone. The object of a preposition is always a nominal element.",
+ cr:"Prepositions require NOUNS, NOUN PHRASES, or PRONOUNS as their objects: 'in the room', 'beside him', 'with great care'. This following element is the 'object of the preposition'.",
+ war:"حروف الجر لا يتبعها أفعال (المصادر مختلفة) أو ظروف أو أدوات تحديد وحدها. مجرور حرف الجر دائماً عنصر اسمي.",
+ car:"حروف الجر تتطلب أسماء أو عبارات اسمية أو ضمائر كمجرور: 'in the room', 'beside him'. هذا العنصر التالي هو 'مجرور حرف الجر'."},
+
+{t:"In the phrase 'under the table,' 'under' is a:",o:["Pronoun","Determiner","Preposition","Qualifier"],a:2,tp:"Prepositions",
+ wr:"'Under' is not a pronoun (doesn't replace a noun), determiner (doesn't signal a noun), or qualifier (doesn't intensify an adjective/adverb). It shows spatial relationship.",
+ cr:"'Under' is a PREPOSITION of place indicating position below something. Followed by 'the table', it forms the prepositional phrase 'under the table'.",
+ war:"'under' ليست ضميراً (لا تحل محل اسم)، ولا أداة تحديد (لا تُشير إلى اسم)، ولا مُكيّفاً (لا تُكثّف صفة). تُظهر العلاقة المكانية.",
+ car:"'under' حرف جر مكان يدل على الموضع أسفل شيء ما. مع 'the table' يُكوّن شبه جملة 'under the table'."},
+
+{t:"Which word is an example of an -ing preposition?",o:["Until","Between","Considering","Behind"],a:2,tp:"Prepositions",
+ wr:"'Until', 'between', and 'behind' are simple prepositions with no -ing ending. Only one option is an -ing preposition.",
+ cr:"'Considering' is an -ING PREPOSITION (a present participle grammaticalized as a preposition). 'Until/between/behind' are simple prepositions.",
+ war:"'until' و'between' و'behind' حروف جر بسيطة لا تنتهي بـ -ing. فقط خيار واحد هو حرف جر -ing.",
+ car:"'considering' حرف جر -ing (اسم فاعل تحوّل لحرف جر). 'until' و'between' و'behind' حروف جر بسيطة."},
+
+// DETERMINERS
+{t:"A determiner is a word that patterns with a noun and _____ it.",o:["Follows","Replaces","Precedes","Modifies after"],a:2,tp:"Determiners",
+ wr:"Determiners do not follow nouns, replace them, or modify them from after. Their fixed position is before the noun they signal.",
+ cr:"Determiners always PRECEDE the noun they pattern with: 'the book', 'a teacher', 'this car', 'my phone', 'every student'.",
+ war:"أدوات التحديد لا تتبع الأسماء ولا تحل محلها ولا تعدّلها من بعد. موضعها الثابت قبل الاسم الذي تُشير إليه.",
+ car:"أدوات التحديد دائماً تسبق الاسم: 'the book', 'a teacher', 'this car', 'my phone', 'every student'."},
+
+{t:"A determiner serves as a signal that:",o:["A verb is soon to follow","A noun is soon to follow","An adverb is soon to follow","An adjective is soon to follow"],a:1,tp:"Determiners",
+ wr:"Determiners don't signal verbs, adverbs, or adjectives. Their specific function is to announce that a noun is coming — possibly preceded by adjectives.",
+ cr:"The key function of a determiner is to signal that a NOUN is coming soon. Hearing 'the', 'a', 'this', 'my' tells us a noun (possibly with adjectives before it) will follow.",
+ war:"أدوات التحديد لا تُشير إلى أفعال أو ظروف أو صفات. وظيفتها المحددة هي الإعلان عن قدوم اسم — ربما مسبوق بصفات.",
+ car:"وظيفة أداة التحديد هي الإشارة إلى أن اسماً قادم. سماع 'the' أو 'a' أو 'this' يخبرنا أن اسماً (ربما مع صفات) سيأتي."},
+
+{t:"Which of the following is a determiner?",o:["Quickly","The","Run","Beautiful"],a:1,tp:"Determiners",
+ wr:"'Quickly' is an adverb; 'run' is a verb; 'beautiful' is an adjective. None of these precede and signal nouns.",
+ cr:"'The' is the definite article — the most common DETERMINER. It precedes nouns and signals that a specific noun follows.",
+ war:"'quickly' ظرف؛ 'run' فعل؛ 'beautiful' صفة. لا شيء منها يسبق الأسماء ويُشير إليها.",
+ car:"'the' أداة التعريف — أكثر أدوات التحديد شيوعاً. تسبق الأسماء وتُشير إلى أن اسماً محدداً يأتي."},
+
+{t:"Determiners most commonly appear:",o:["Before nouns","After verbs","Before adverbs","After adjectives"],a:0,tp:"Determiners",
+ wr:"Determiners don't typically follow verbs, precede adverbs, or come after adjectives. Their natural home is before the noun phrase.",
+ cr:"Determiners appear BEFORE nouns and before any adjectives that precede the noun. Structure: Determiner + (Adjective) + Noun: 'the big book', 'a beautiful day'.",
+ war:"أدوات التحديد لا تتبع الأفعال عادةً، ولا تسبق الظروف، ولا تأتي بعد الصفات. موضعها الطبيعي قبل العبارة الاسمية.",
+ car:"أدوات التحديد تأتي قبل الأسماء وقبل أي صفات تسبق الاسم. الهيكل: أداة تحديد + (صفة) + اسم: 'the big book'."},
+
+{t:"In the phrase 'those books,' the word 'those' is a:",o:["Pronoun","Determiner","Preposition","Qualifier"],a:1,tp:"Determiners",
+ wr:"'Those' is a pronoun only when it stands alone (without a following noun). When followed by 'books', it acts as a determiner signaling the noun.",
+ cr:"'Those' is a DEMONSTRATIVE DETERMINER — pointing to specific plural distant nouns. When followed by a noun, this/that/these/those act as determiners.",
+ war:"'those' ضمير فقط حين تقف وحدها (بلا اسم بعدها). حين يتبعها 'books'، تعمل أداة تحديد تُشير إلى الاسم.",
+ car:"'those' أداة إشارة — تشير إلى أسماء محددة جمع بعيدة. حين يتبعها اسم، تعمل this/that/these/those كأدوات تحديد."},
+
+{t:"Which is a possessive determiner?",o:["Mine","My","Me","We"],a:1,tp:"Determiners",
+ wr:"'Mine' is a possessive PRONOUN (stands alone); 'me' and 'we' are personal pronouns. Only one option comes before a noun to show possession.",
+ cr:"'My' is a POSSESSIVE DETERMINER — it precedes a noun to show possession: 'my book', 'my friend'. 'Mine' is a standalone possessive pronoun.",
+ war:"'mine' ضمير ملكية (يقف وحده)؛ 'me' و'we' ضمائر شخصية. فقط خيار واحد يأتي قبل اسم للدلالة على الملكية.",
+ car:"'my' أداة ملكية — تسبق اسماً للدلالة على الملكية: 'my book', 'my friend'. 'mine' ضمير ملكية مستقل."},
+
+{t:"In 'This is my car,' 'my' functions as a:",o:["Substitutional possessive","Interrogative pronoun","Prenominal possessive","Relative pronoun"],a:2,tp:"Determiners",
+ wr:"A substitutional possessive stands alone (mine, yours, his); interrogative pronouns ask questions; relative pronouns introduce clauses. 'My' comes before 'car'.",
+ cr:"'My' is a PRENOMINAL POSSESSIVE — it comes directly BEFORE the noun 'car'. Prenominal = before the noun. It functions as a possessive determiner.",
+ war:"الملكية البديلية تقف وحدها (mine, yours)؛ الاستفهامية تطرح أسئلة؛ الموصولة تُقدّم جملاً. 'my' تأتي قبل 'car'.",
+ car:"'my' ملكية قبل الاسم (prenominal) — تأتي مباشرةً قبل الاسم 'car'. Prenominal = قبل الاسم. تعمل أداة ملكية."},
+
+// PRONOUNS
+{t:"Pronouns primarily function to:",o:["Replace nouns","Modify verbs","Join clauses","Modify adjectives"],a:0,tp:"Pronouns",
+ wr:"Modifying verbs is the role of adverbs; joining clauses is the role of conjunctions; modifying adjectives is done by adverbs. Pronouns serve a different purpose.",
+ cr:"Pronouns REPLACE nouns/noun phrases to avoid repetition: 'Ahmed is studying. He is at the library.' 'He' replaces 'Ahmed'.",
+ war:"تعديل الأفعال دور الظروف؛ ربط الجمل دور حروف العطف؛ تعديل الصفات تفعله الظروف. الضمائر لها هدف مختلف.",
+ car:"الضمائر تحل محل الأسماء لتجنب التكرار: 'Ahmed is studying. He is at the library.' 'He' يحل محل 'Ahmed'."},
+
+{t:"Which of the following is a personal pronoun?",o:["Who","She","Which","Whose"],a:1,tp:"Pronouns",
+ wr:"'Who', 'which', and 'whose' are interrogative/relative pronouns — they ask questions or introduce clauses. Personal pronouns refer to specific persons/things.",
+ cr:"'She' is a PERSONAL PRONOUN (3rd person singular feminine). Personal pronouns: I, you, he, she, it, we, they, me, him, her, us, them.",
+ war:"'who' و'which' و'whose' ضمائر استفهامية/موصولة — تطرح أسئلة أو تُقدّم جملاً. الضمائر الشخصية تشير إلى أشخاص/أشياء محددة.",
+ car:"'she' ضمير شخصي (مفرد غائب مؤنث). الضمائر الشخصية: I, you, he, she, it, we, they, me, him, her, us, them."},
+
+{t:"Personal pronouns typically indicate:",o:["Comparison","Person and number","Degree","Tense"],a:1,tp:"Pronouns",
+ wr:"Comparison is expressed by adjective degrees; degree is an adverb function; tense is marked on verbs, not pronouns. Personal pronouns encode grammatical categories of the noun they replace.",
+ cr:"Personal pronouns encode PERSON (1st: I/we, 2nd: you, 3rd: he/she/it/they) and NUMBER (singular/plural). They may also encode gender and case.",
+ war:"المقارنة تُعبّر عنها درجات الصفات؛ الدرجة وظيفة ظرفية؛ الزمن يُعلَّم على الأفعال. الضمائر الشخصية تُشفّر فئات نحوية للاسم الذي تحل محله.",
+ car:"الضمائر الشخصية تُشفّر الشخص (1: I/we، 2: you، 3: he/she/it/they) والعدد (مفرد/جمع). قد تُشفّر الجنس والحالة أيضاً."},
+
+{t:"Which of the following is an object personal pronoun?",o:["I","She","Him","They"],a:2,tp:"Pronouns",
+ wr:"'I', 'she', and 'they' are SUBJECT pronouns (nominative case). Object pronouns are used as direct/indirect objects or objects of prepositions.",
+ cr:"'Him' is an OBJECT PRONOUN — used as direct/indirect object or prepositional object: 'I saw him', 'Give it to him'. Subject pronouns: I, he, she, they, we.",
+ war:"'I' و'she' و'they' ضمائر فاعل (حالة الرفع). ضمائر المفعول تُستخدم مفاعيل مباشرة/غير مباشرة أو مجرورة.",
+ car:"'him' ضمير مفعول — يُستخدم مفعولاً به أو مجروراً: 'I saw him', 'Give it to him'. ضمائر الفاعل: I, he, she, they."},
+
+{t:"Which pronoun is used to ask about people in questions?",o:["Which","What","Who","Whose"],a:2,tp:"Pronouns",
+ wr:"'Which' asks about choices; 'what' asks about things/actions; 'whose' asks about possession. One pronoun specifically asks about persons.",
+ cr:"'WHO' is the interrogative pronoun for PERSONS (subject position): 'Who called?' 'Who is coming?' It refers specifically to people.",
+ war:"'which' يسأل عن الخيارات؛ 'what' عن الأشياء/الأحداث؛ 'whose' عن الملكية. ضمير واحد يسأل تحديداً عن الأشخاص.",
+ car:"'who' ضمير الاستفهام عن الأشخاص (موضع الفاعل): 'Who called?' 'Who is coming?' يشير تحديداً إلى الناس."},
+
+{t:"Which of the following is an interrogative pronoun?",o:["That","Which","Them","Us"],a:1,tp:"Pronouns",
+ wr:"'That' is a demonstrative/relative pronoun; 'them' and 'us' are object personal pronouns. Only one option introduces questions.",
+ cr:"'Which' is an INTERROGATIVE PRONOUN used to ask about people or things (implying a choice): 'Which do you prefer?' 'Which is correct?'",
+ war:"'that' ضمير إشاري/موصول؛ 'them' و'us' ضمائر مفعول شخصية. فقط خيار واحد يُقدّم الأسئلة.",
+ car:"'which' ضمير استفهام يُستخدم للسؤال عن أشخاص أو أشياء (يُضمّن اختياراً): 'Which do you prefer?'"},
+
+{t:"Which pronoun introduces a relative clause referring to a person?",o:["Who","What","Which","Whom"],a:0,tp:"Pronouns",
+ wr:"'What' is not a relative pronoun; 'which' refers to things; 'whom' is also for persons but in OBJECT position. One option is the standard subject relative pronoun for persons.",
+ cr:"'WHO' (subject form) introduces relative clauses for PERSONS: 'The teacher who taught me'. 'Whom' is for persons in object position. 'Which' is for things/animals.",
+ war:"'what' ليس ضميراً موصولاً؛ 'which' للأشياء؛ 'whom' أيضاً للأشخاص لكن في موضع المفعول. خيار واحد هو الضمير الموصول الفاعل للأشخاص.",
+ car:"'who' (صيغة الفاعل) يُقدّم الجمل الموصولة للأشخاص: 'The teacher who taught me'. 'whom' للأشخاص في موضع المفعول. 'which' للأشياء."},
+
+{t:"In 'The student who won the prize is my friend,' 'who' is a:",o:["Personal pronoun","Interrogative pronoun","Relative pronoun","Demonstrative pronoun"],a:2,tp:"Pronouns",
+ wr:"'Who' is not a personal, interrogative, or demonstrative pronoun here — it doesn't stand alone referring to a person, doesn't ask a question, and doesn't point.",
+ cr:"'Who' is a RELATIVE PRONOUN introducing the clause 'who won the prize', which modifies the noun 'student'. Relative pronouns connect clauses to nouns.",
+ war:"'who' هنا ليست ضميراً شخصياً أو استفهامياً أو إشارياً — لا تقف وحدها للإشارة لشخص، ولا تطرح سؤالاً، ولا تُشير.",
+ car:"'who' ضمير موصول يُقدّم الجملة 'who won the prize' التي تعدّل الاسم 'student'. الضمائر الموصولة تربط الجمل بالأسماء."},
+
+{t:"Which relative pronoun commonly refers to things or animals?",o:["Who","Which","Whom","Whose"],a:1,tp:"Pronouns",
+ wr:"'Who' and 'whom' refer to persons only; 'whose' shows possession. One pronoun is used specifically for things and animals.",
+ cr:"'WHICH' refers to THINGS or ANIMALS in relative clauses: 'The car which I bought...', 'The dog which barked...'. 'Who/whom' refer to persons only.",
+ war:"'who' و'whom' للأشخاص فقط؛ 'whose' للملكية. ضمير واحد يُستخدم تحديداً للأشياء والحيوانات.",
+ car:"'which' يشير إلى الأشياء أو الحيوانات في الجمل الموصولة: 'The car which I bought...'. 'who/whom' للأشخاص فقط."},
+
+{t:"In 'Whom did you invite to the meeting?' 'whom' is a:",o:["Personal pronoun","Interrogative pronoun","Relative pronoun","Reflexive pronoun"],a:1,tp:"Pronouns",
+ wr:"'Whom' here starts a question, not a relative clause — so it's not a relative pronoun. It's not a personal or reflexive pronoun either.",
+ cr:"'Whom' is an INTERROGATIVE PRONOUN (object form of 'who') used in a question. It asks about a person in object position: 'Whom = the person you invited'.",
+ war:"'whom' هنا تبدأ سؤالاً وليس جملة موصولة — لذا ليست موصولة. وليست شخصية أو انعكاسية.",
+ car:"'whom' ضمير استفهام (صيغة المفعول لـ 'who') يُستخدم في سؤال. يسأل عن شخص في موضع المفعول: 'whom = الشخص الذي دعوته'."},
+
+{t:"Which sentence contains a relative pronoun?",o:["She asked who was coming.","I know the teacher who wrote the book.","They finished the work quickly.","He gave me the answer."],a:1,tp:"Pronouns",
+ wr:"In A, 'who' introduces an indirect question (interrogative use), not a relative clause. C and D have no relative pronouns at all.",
+ cr:"In 'I know the teacher who wrote the book,' 'who' is a RELATIVE PRONOUN introducing the relative clause 'who wrote the book', which modifies the noun 'teacher'.",
+ war:"في A، 'who' تُقدّم سؤالاً غير مباشر (استخدام استفهامي)، ليس جملة موصولة. C وD لا تحتويان ضمائر موصولة.",
+ car:"في 'I know the teacher who wrote the book'، 'who' ضمير موصول يُقدّم الجملة 'who wrote the book' التي تعدّل الاسم 'teacher'."},
+
+{t:"In 'The lawn mower is ours,' 'ours' is a:",o:["Prenominal possessive","Interrogative pronoun","Substitutional possessive","Relative pronoun"],a:2,tp:"Pronouns",
+ wr:"Prenominal possessive comes before a noun (our mower); interrogative/relative pronouns ask questions or introduce clauses. 'Ours' stands alone after the verb.",
+ cr:"'Ours' is a SUBSTITUTIONAL POSSESSIVE — it stands ALONE without a following noun, substituting for 'our + noun'. Compare: 'our mower' (prenominal) vs 'ours' (substitutional).",
+ war:"الملكية قبل الاسم تأتي قبل اسم (our mower)؛ الاستفهامية/الموصولة تطرح أسئلة أو تُقدّم جملاً. 'ours' تقف وحدها بعد الفعل.",
+ car:"'ours' ضمير ملكية بديلي — يقف وحده دون اسم، يحل محل 'our + اسم'. قارن: 'our mower' (قبل الاسم) مقابل 'ours' (بديلي)."},
+
+{t:"With reference to person, the first person singular denotes:",o:["The listener","The speaker","A third party","A group"],a:1,tp:"Pronouns",
+ wr:"The listener = 2nd person (you); a third party = 3rd person (he/she/it); a group = could be 1st/2nd/3rd plural. First person singular refers to the one speaking.",
+ cr:"The FIRST PERSON SINGULAR (I, me, my, mine, myself) always refers to THE SPEAKER — the person currently talking.",
+ war:"المستمع = المخاطب (you)؛ الطرف الثالث = الغائب (he/she/it)؛ المجموعة = جمع. المفرد المتكلم يشير إلى المتحدث.",
+ car:"المفرد المتكلم (I, me, my, myself) يشير دائماً إلى المتحدث — الشخص الذي يتكلم حالياً."},
+
+{t:"In 'Who did you take to the theatre?' 'Who' is a(n):",o:["Relative pronoun","Personal pronoun","Interrogative pronoun","Reflexive pronoun"],a:2,tp:"Pronouns",
+ wr:"'Who' here is at the start of a direct question, not introducing a clause that modifies a noun. It's not personal or reflexive either.",
+ cr:"'Who' is an INTERROGATIVE PRONOUN — it forms a direct question about a person. Interrogative pronouns START questions; relative pronouns INTRODUCE modifying clauses.",
+ war:"'who' هنا في بداية سؤال مباشر، لا تُقدّم جملة تعدّل اسماً. وليست شخصية أو انعكاسية.",
+ car:"'who' ضمير استفهام — يُكوّن سؤالاً مباشراً عن شخص. الاستفهامية تبدأ الأسئلة؛ الموصولة تُقدّم الجمل المُعدِّلة."},
+
+{t:"In 'The flavor that pleases me most is chocolate,' the function of 'that' is:",o:["Object of verb","Subject of verb","Determiner","Qualifier"],a:1,tp:"Pronouns",
+ wr:"Test: 'that pleases me' → who/what pleases me? = 'that' → it is the subject. It is not a determiner (no noun follows it alone) or qualifier.",
+ cr:"'That' is a relative pronoun. In the clause 'that pleases me most,' 'that' is the SUBJECT of the verb 'pleases'. (that pleases me = it pleases me).",
+ war:"اختبر: 'that pleases me' ← من/ما يُرضيني؟ = 'that' ← هو الفاعل. ليست أداة تحديد (لا اسم يتبعها وحدها) ولا مُكيّف.",
+ car:"'that' ضمير موصول. في الجملة 'that pleases me most'، 'that' هو فاعل الفعل 'pleases'. (that pleases me = it pleases me)."},
+
+{t:"In 'The girl whom I admired most was Jack's sister,' the function of 'whom' is:",o:["Subject of verb","Object of verb","Determiner","Qualifier"],a:1,tp:"Pronouns",
+ wr:"Test: 'I admired whom/her most' → 'whom' is the object of 'admired', not the subject (I = subject). It's not a determiner or qualifier.",
+ cr:"'Whom' is the OBJECT of the verb 'admired' in the relative clause. Test: replace with him/her → 'I admired her most' confirms object function.",
+ war:"اختبر: 'I admired whom/her most' ← 'whom' هو مفعول 'admired'، ليس الفاعل (I = الفاعل). ليست أداة تحديد أو مُكيّف.",
+ car:"'whom' مفعول الفعل 'admired' في الجملة الموصولة. اختبر: استبدل بـ him/her ← 'I admired her most' يؤكد وظيفة المفعول."},
+
+{t:"In 'This is my car,' 'my' functions as a prenominal possessive.",o:["True — my comes before a noun","False — my comes after a noun","True — my is a subject pronoun","False — my is a substitutional possessive"],a:0,tp:"Pronouns",
+ wr:"'My' does come before the noun 'car' — prenominal literally means 'before the noun'. This is not false, and 'my' is not a subject pronoun or substitutional possessive.",
+ cr:"TRUE — 'my' is a PRENOMINAL possessive because it comes DIRECTLY BEFORE the noun 'car'. Prenominal = pre (before) + nominal (noun).",
+ war:"'my' تأتي قبل الاسم 'car' — prenominal تعني حرفياً 'قبل الاسم'. هذا ليس خطأً، و'my' ليست ضمير فاعل ولا ملكية بديلية.",
+ car:"صحيح — 'my' ملكية قبل الاسم لأنها تأتي مباشرةً قبل الاسم 'car'. Prenominal = pre (قبل) + nominal (اسم)."},
+
+// AUXILIARIES
+{t:"In 'I thought I could help you,' 'could' functions as a:",o:["Main verb","Adverb","Modal auxiliary verb","Determiner"],a:2,tp:"Auxiliaries",
+ wr:"'Could' is not carrying the main meaning (help is), not describing manner, and not signaling a noun. It precedes the main verb to express possibility.",
+ cr:"'Could' is a MODAL AUXILIARY (past form of 'can'). Modals (can/could, will/would, may/might, must) precede the main verb and express ability, possibility, or permission.",
+ war:"'could' لا تحمل المعنى الرئيسي ('help' تفعل ذلك)، ولا تصف الأسلوب، ولا تُشير إلى اسم. تسبق الفعل الرئيسي للتعبير عن الاحتمال.",
+ car:"'could' فعل مساعد شرطي (الماضي لـ 'can'). الشرطيات (can/could, will/would, may/might, must) تسبق الفعل الرئيسي وتعبّر عن القدرة والاحتمال."},
+
+{t:"When immediately preceding the main verb, 'have' is followed by a:",o:["Present participle","Past participle","Infinitive","Stem form"],a:1,tp:"Auxiliaries",
+ wr:"'Have' + present participle = not a standard tense; have + infinitive/stem is incorrect. The perfect aspect always requires a specific form after 'have'.",
+ cr:"When 'have/has/had' is an auxiliary, it is ALWAYS followed by the PAST PARTICIPLE: 'have written', 'has gone', 'had finished'. This forms the perfect aspect.",
+ war:"'have' + اسم فاعل حاضر ليس زمناً معيارياً؛ have + مصدر/جذع خاطئ. الجانب التام يتطلب دائماً صورة محددة بعد 'have'.",
+ car:"حين يكون 'have/has/had' مساعداً، يتبعه دائماً المفعول المصدري: 'have written', 'has gone', 'had finished'. يُكوّن الجانب التام."},
+
+{t:"The obligatory sequence of auxiliary verbs is:",o:["have + modal + be","be + have + modal","modal + have + be","be + modal + have"],a:2,tp:"Auxiliaries",
+ wr:"The other sequences (*have + modal, *be + have + modal, *be + modal + have) are all ungrammatical. There is only one correct order.",
+ cr:"The OBLIGATORY sequence is: MODAL → HAVE → BE. Example: 'could have been' (modal + perfect + passive). Rearranging this order is ungrammatical.",
+ war:"التسلسلات الأخرى (*have + modal، *be + have + modal) كلها خاطئة نحوياً. يوجد ترتيب صحيح واحد فقط.",
+ car:"الترتيب الإلزامي: MODAL ← HAVE ← BE. مثال: 'could have been' (شرطي + تام + مجهول). إعادة ترتيب هذا الترتيب خطأ نحوي."},
+
+{t:"In 'She likes ice-cream, doesn't she?' the tag 'doesn't she' is a:",o:["Relative clause","Question tag","Subordinate clause","Complement"],a:1,tp:"Auxiliaries",
+ wr:"It is not a relative clause (doesn't modify a noun), not a subordinate clause (not introduced by a subordinator), and not a complement (doesn't rename subject).",
+ cr:"'Doesn't she?' is a QUESTION TAG — a short question added after a statement to seek confirmation. Tags use auxiliaries and reverse the polarity of the main clause.",
+ war:"ليست جملة موصولة (لا تعدّل اسماً)، ولا جملة فرعية (لا يُقدّمها رابط)، ولا مكمّلاً (لا يُعيد تسمية الفاعل).",
+ car:"'doesn't she?' سؤال ذيلي — سؤال قصير يُضاف بعد جملة لطلب التأكيد. الأذيال تستخدم مساعدات وتعكس قطبية الجملة الرئيسية."},
+
+{t:"'The car could have been wrecked by the storm.' How many auxiliary verbs are there?",o:["One","Two","Three","Four"],a:2,tp:"Auxiliaries",
+ wr:"Counting one or two misses some auxiliaries; four would require an extra auxiliary not present. Identify: could, have, been.",
+ cr:"THREE auxiliaries: 'could' (modal) + 'have' (perfect) + 'been' (passive, form of 'be'). The MAIN verb is 'wrecked'. Sequence: modal + have + be + past participle.",
+ war:"عدّ واحد أو اثنين يُفوّت بعض المساعدات؛ أربعة تتطلب مساعداً إضافياً غير موجود. حدّد: could, have, been.",
+ car:"ثلاثة مساعدات: 'could' (شرطي) + 'have' (تام) + 'been' (مجهول، صيغة 'be'). الفعل الرئيسي 'wrecked'. الترتيب: modal + have + be + مفعول مصدري."},
+
+{t:"Which of the following can be an auxiliary verb?",o:["Write","Have","Careful","They"],a:1,tp:"Auxiliaries",
+ wr:"'Write' is a lexical verb only; 'careful' is an adjective; 'they' is a personal pronoun. Only one option can support a main verb.",
+ cr:"'Have' can function as an AUXILIARY when followed by a past participle: 'have finished', 'have written'. It forms the perfect aspect.",
+ war:"'write' فعل معجمي فقط؛ 'careful' صفة؛ 'they' ضمير شخصي. فقط خيار واحد يمكنه دعم الفعل الرئيسي.",
+ car:"'have' يمكن أن يعمل مساعداً حين يتبعه مفعول مصدري: 'have finished', 'have written'. يُكوّن الجانب التام."},
+
+{t:"Auxiliaries help main verbs express:",o:["Tense and voice","Plurality","Comparison","Possession"],a:0,tp:"Auxiliaries",
+ wr:"Plurality is marked on nouns; comparison is marked on adjectives/adverbs; possession is shown by 's or pronouns. Auxiliaries serve grammatical functions related to the verb.",
+ cr:"Auxiliaries help express: TENSE (have=perfect), VOICE (be=passive: 'was written'), ASPECT (be+-ing=progressive), and MODALITY (can/will/must).",
+ war:"الجمع يُعلَّم على الأسماء؛ المقارنة على الصفات/الظروف؛ الملكية بـ 's أو الضمائر. المساعدات تؤدي وظائف نحوية متعلقة بالفعل.",
+ car:"المساعدات تساعد في التعبير عن: الزمن (have=التام)، الصوت (be=المجهول: 'was written')، الجانب (be+-ing=المستمر)، الوجهة (can/will/must)."},
+
+{t:"In 'She is studying English,' 'is' functions as:",o:["Main verb","Auxiliary","Determiner","Qualifier"],a:1,tp:"Auxiliaries",
+ wr:"'Is' is not the main verb here (studying is), not a determiner (doesn't signal a noun), and not a qualifier (doesn't intensify adjective/adverb).",
+ cr:"'Is' is an AUXILIARY (form of 'be') used with the present participle 'studying' to form the present progressive tense. The main verb is 'studying'.",
+ war:"'is' ليست الفعل الرئيسي هنا ('studying' هو الرئيسي)، وليست أداة تحديد، وليست مُكيّفاً.",
+ car:"'is' فعل مساعد (صيغة 'be') يُستخدم مع اسم الفاعل الحاضر 'studying' لتكوين المضارع المستمر. الفعل الرئيسي هو 'studying'."},
+
+{t:"In 'They have finished the work,' 'have' is:",o:["Determiner","Pronoun","Auxiliary verb","Preposition"],a:2,tp:"Auxiliaries",
+ wr:"'Have' here does not signal a noun (determiner), replace a noun (pronoun), or link nouns (preposition). It supports the past participle 'finished'.",
+ cr:"'Have' is an AUXILIARY VERB used with past participle 'finished' to form the PRESENT PERFECT: have/has + past participle = present perfect.",
+ war:"'have' هنا لا تُشير إلى اسم (أداة تحديد)، ولا تحل محل اسم (ضمير)، ولا تربط أسماء (حرف جر). تدعم المفعول المصدري 'finished'.",
+ car:"'have' فعل مساعد يُستخدم مع المفعول المصدري 'finished' لتكوين المضارع التام: have/has + مفعول مصدري = مضارع تام."},
+
+{t:"The verb 'could' belongs to which sub-category of auxiliaries?",o:["Primary auxiliaries","Modal auxiliaries","Lexical auxiliaries","Copular auxiliaries"],a:1,tp:"Auxiliaries",
+ wr:"Primary auxiliaries are be/have/do (can also be main verbs); 'lexical auxiliaries' and 'copular auxiliaries' are not standard categories. 'Could' expresses modality.",
+ cr:"'Could' is a MODAL AUXILIARY (past form of 'can'). Modals: can/could, will/would, shall/should, may/might, must. They cannot function as main verbs.",
+ war:"الأفعال المساعدة الأساسية هي be/have/do (يمكنها العمل أفعالاً رئيسية)؛ 'lexical' و'copular auxiliaries' ليسا تصنيفين معياريين. 'could' تعبّر عن الوجهة.",
+ car:"'could' فعل مساعد شرطي (ماضي 'can'). الشرطيات: can/could, will/would, shall/should, may/might, must. لا يمكنها العمل أفعالاً رئيسية."}
+];
+
+// ── STATE ──────────────────────────────────────────────
+var sName='', qList=[], qi=0, ans=[], tmr=null, secs=60*60, picked=false;
+var SZ=100, L=['A','B','C','D'];
+
+// ── SCREENS ────────────────────────────────────────────
+function show(id){
+  var all=document.querySelectorAll('.scr');
+  for(var i=0;i<all.length;i++) all[i].classList.add('hidden');
+  var el=document.getElementById(id);
+  el.classList.remove('hidden');
+  el.style.animation='none'; void el.offsetWidth; el.style.animation='';
+}
+
+// ── TELEGRAM ───────────────────────────────────────────
+function initApp(){
+  if(!localStorage.getItem('tg_v5')){
+    localStorage.setItem('tg_v5','1');
+    show('tg-scr');
+    var c=5, el=document.getElementById('tgNum');
+    var iv=setInterval(function(){
+      c--; el.textContent=c;
+      if(c<=0){ clearInterval(iv); window.open('https://t.me/vgsscwe','_blank'); setTimeout(function(){ show('lg-scr'); },1500); }
+    },1000);
+  } else { show('lg-scr'); }
+}
+
+// ── NAME INPUT ─────────────────────────────────────────
+document.getElementById('nameIn').addEventListener('input', function(){
+  var p=this.value.trim().split(/\s+/).filter(function(x){ return x.length>0; });
+  var h=document.getElementById('nhint');
+  h.textContent=p.length+' / 4 parts entered';
+  h.style.color=p.length>=4?'var(--correct)':'var(--gray)';
+  document.getElementById('startBtn').disabled=p.length<4;
+  if(p.length>=4) document.getElementById('nerr').style.display='none';
+});
+
+// ── SHUFFLE ────────────────────────────────────────────
+function shuffle(a){
+  var b=a.slice();
+  for(var i=b.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=b[i]; b[i]=b[j]; b[j]=tmp;
+  }
+  return b;
+}
+
+// ── START ──────────────────────────────────────────────
+function startQuiz(){
+  var v=document.getElementById('nameIn').value.trim();
+  var p=v.split(/\s+/).filter(function(x){ return x.length>0; });
+  if(p.length<4){ document.getElementById('nerr').style.display='block'; return; }
+  sName=v;
+  qList=shuffle(QB).slice(0,SZ);
+  qi=0; ans=[]; picked=false;
+  for(var i=0;i<SZ;i++) ans.push(-1);
+  secs=60*60;
+  show('qz-scr');
+  document.getElementById('qt').textContent=SZ;
+  clearInterval(tmr);
+  tmr=setInterval(function(){
+    secs--;
+    var m=Math.floor(secs/60), s=secs%60;
+    var d=document.getElementById('tdisp');
+    d.textContent=m+':'+(s<10?'0':'')+s;
+    if(secs<=120) d.classList.add('warn'); else d.classList.remove('warn');
+    if(secs<=0){ clearInterval(tmr); showResults(); }
+  },1000);
+  renderQ();
+}
+
+// ── RENDER QUESTION ────────────────────────────────────
+function renderQ(){
+  picked=false;
+  var q=qList[qi];
+  document.getElementById('qn').textContent=qi+1;
+  document.getElementById('pfill').style.width=Math.round(qi/SZ*100)+'%';
+  document.getElementById('ttag').textContent=q.tp;
+  document.getElementById('qtxt').textContent=q.t;
+  document.getElementById('fmsg').textContent='';
+  document.getElementById('fmsg').className='fmsg';
+  document.getElementById('btnn').classList.remove('vis');
+  var g=document.getElementById('opts');
+  g.innerHTML='';
+  for(var i=0;i<q.o.length;i++){
+    var btn=document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML='<span class="ol">'+L[i]+'</span><span>'+q.o[i]+'</span>';
+    btn.setAttribute('data-i',i);
+    btn.onclick=pickAns;
+    g.appendChild(btn);
+  }
+}
+
+// ── PICK ANSWER ────────────────────────────────────────
+function pickAns(){
+  if(picked) return;
+  picked=true;
+  var c=parseInt(this.getAttribute('data-i'));
+  var q=qList[qi];
+  ans[qi]=c;
+  var btns=document.querySelectorAll('.opt');
+  for(var i=0;i<btns.length;i++) btns[i].classList.add('lk');
+  if(c===q.a){ btns[c].classList.add('cr'); }
+  else { btns[c].classList.add('wr'); btns[q.a].classList.add('cr'); }
+  var fm=document.getElementById('fmsg');
+  fm.textContent=c===q.a?'✓ Correct!':'✗ Incorrect — Correct: '+L[q.a];
+  fm.className='fmsg '+(c===q.a?'cr':'wr');
+  document.getElementById('btnn').classList.add('vis');
+}
+
+// ── NEXT ───────────────────────────────────────────────
+function nextQ(){
+  qi++;
+  if(qi>=SZ){ clearInterval(tmr); showResults(); }
+  else renderQ();
+}
+
+// ── RESULTS ────────────────────────────────────────────
+function showResults(){
+  clearInterval(tmr);
+  var correct=0, wrong=[];
+  for(var i=0;i<SZ;i++){
+    if(ans[i]===qList[i].a) correct++;
+    else wrong.push({q:qList[i], ua:ans[i], n:i});
+  }
+  var pct=Math.round(correct/SZ*100);
+  document.getElementById('rsname').textContent='Student: '+sName;
+  document.getElementById('rpct').textContent=pct;
+  document.getElementById('stot').textContent=SZ;
+  document.getElementById('scor').textContent=correct;
+  document.getElementById('swrg').textContent=SZ-correct;
+  var gb=document.getElementById('gbadge');
+  if(pct>=85){ gb.textContent='🏅 Excellent'; gb.className='gbadge gA'; }
+  else if(pct>=65){ gb.textContent='👍 Good'; gb.className='gbadge gB'; }
+  else { gb.textContent='📚 Needs Review'; gb.className='gbadge gC'; }
+  // Ring animation
+  var ring=document.getElementById('rfill');
+  ring.style.strokeDashoffset='424.12';
+  setTimeout(function(){ ring.style.strokeDashoffset=(424.12-(pct/100)*424.12).toFixed(2); },300);
+  // Wrong items
+  var ws=document.getElementById('wsec');
+  ws.innerHTML='';
+  if(wrong.length===0){
+    ws.innerHTML='<div style="text-align:center;color:var(--correct);font-size:1.2rem;padding:26px 0;">🎉 Perfect Score! All answers correct!</div>';
+  } else {
+    var title=document.createElement('div');
+    title.className='wstitle';
+    title.textContent='❌ Incorrect Answers — Explanation ('+wrong.length+')';
+    ws.appendChild(title);
+    for(var k=0;k<wrong.length;k++){
+      var item=wrong[k];
+      var q=item.q, ua=item.ua, num=k+1;
+      var uaText=ua===-1?'— Not answered':L[ua]+': '+q.o[ua];
+      var caText=L[q.a]+': '+q.o[q.a];
+      var div=document.createElement('div');
+      div.className='wi';
+      div.innerHTML=
+        '<div class="wiq"><strong>Q'+num+' &bull; '+q.tp+'</strong>'+q.t+'</div>'+
+        '<div class="wians">'+
+          '<div class="wia uw"><span class="wia-lbl">Your Answer</span>'+uaText+'</div>'+
+          '<div class="wia ca"><span class="wia-lbl">Correct Answer</span>'+caText+'</div>'+
+        '</div>'+
+        '<div class="exp-sec">'+
+          '<div class="exp-hdr wh">❌ Why is your answer wrong? / لماذا إجابتك خاطئة؟</div>'+
+          '<div class="exp-wb">'+
+            '<div class="exp-wen">'+q.wr+'</div>'+
+            '<div class="exp-war">'+q.war+'</div>'+
+          '</div>'+
+          '<div class="exp-hdr ch">✅ Why is this the correct answer? / لماذا هذا هو الصحيح؟</div>'+
+          '<div class="exp-cb">'+
+            '<div class="exp-cen">The correct answer is "'+q.o[q.a]+'". '+q.cr+'</div>'+
+            '<div class="exp-car">الإجابة الصحيحة هي "'+q.o[q.a]+'". '+q.car+'</div>'+
+          '</div>'+
+        '</div>';
+      ws.appendChild(div);
+    }
+  }
+  show('rs-scr');
+}
+
+// ── RETRY ──────────────────────────────────────────────
+function retryQuiz(){
+  document.getElementById('nameIn').value='';
+  document.getElementById('nhint').textContent='0 / 4 parts entered';
+  document.getElementById('nhint').style.color='var(--gray)';
+  document.getElementById('startBtn').disabled=true;
+  show('lg-scr');
+}
+
+window.addEventListener('load', initApp);
+</script>
+</body>
+</html>
